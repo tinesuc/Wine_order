@@ -1,0 +1,141 @@
+:root{
+	--in-pannel-width:48vw;
+	--bottle-pannel-width:18vw;
+	--theme-color-1:Indigo;
+}
+*{
+	margin:0;
+	padding:0;
+	box-sizing: border-box;
+	font-family: Ariel;
+}
+body{
+	height:95vh;
+	background-image:url("bar-scene-background2-blur7.png");
+	background-size: 200vh;
+	background-position: 40% 0%;
+	/*background-image:url("bar-scene-background.jpg");
+	background-size: 200vh;
+	background-position: 25% 75%;*/
+}
+
+
+#main_panel{
+	margin-left:calc(50% - var(--in-pannel-width)/2);
+	width: calc(var(--bottle-pannel-width) + var(--in-pannel-width));
+	height: 90vh;
+	margin-top: 5vh;
+}
+#input_panel{
+	background-color:white;
+	width: var(--in-pannel-width);
+	height:100%;
+	display:inline-block;
+	border:5px solid var(--theme-color-1);
+	float:left;
+	border-radius:9px;
+}
+#bottle_panel{
+	background-color:blue;
+	width: var(--bottle-pannel-width);
+	height:100%;
+	display:inline-block;
+	/*
+		bottle max height = main panel height
+		bottle max width  = 0.5 main panel width
+	*/
+}
+#title{
+	width:100%;
+	height:min(9vh, 5.5vw);
+	border-bottom:2px dotted var(--theme-color-1);
+}
+h1{
+	width:70%;
+	text-align-last: center;
+	line-height:min(9vh, 5.5vw);
+	font-size:min(7vh, 4.5vw);
+	margin:auto;
+	white-space: nowrap;
+}
+table{
+	width:100%;
+}
+#table{
+	padding:15px;
+	width:100%;
+	height:45%;
+}
+input, textarea, select{
+	border:1px solid grey;
+	border-radius:0;
+	line-height:150%;
+	font-size:80%;
+}
+input:focus-visible{
+	outline:1px solid grey;
+	border-radius:0;
+}
+br{
+	user-select:none;
+}
+h3{
+	margin-bottom:-5px;
+	margin-top:25px;
+	line-height:0px;
+}
+span{
+	display:inline;
+	width:30%;
+	line-height:250%;
+	font-size:100%;
+}
+#name,#name2,#addr,#postal,#emailid,#phoneid{
+	width:100%;
+	display:inline-block;
+}
+#ime,#priimek,#posta,#naslov,#email,#phone{
+	width:60%;
+	float:right;
+	line-height:150%;
+	margin:auto;
+	transform: translateY(50%);
+}
+#phone{
+	transform: translateY(30%);
+}
+#phone_n1, #phone_n2{
+	width:35px;
+	margin-right:0px;
+}
+#phone_n3{
+	width:40px;
+}
+#submit{
+	border-radius:2px;
+	margin-top:10px;
+}
+form{
+	height:calc(100% - min(9vh, 5.5vw));
+}
+
+#selector{
+	margin:1vw;
+	border:4px solid gray;
+	height:calc(55% - 2*1vw);
+}
+
+ul{
+	margin:1vw 0vw 1vw 1vw;
+	list-style-type:none;
+	height:100%;
+	overflow-y: scroll;
+}
+li{
+	height:25%;
+}
+
+
+
+
+

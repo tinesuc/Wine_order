@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+	<meta charset="UTF-8">
+	<title>Naročevanje Vina</title>
+	<link rel="stylesheet" href="main_css.css" type="text/css" media="all" >
+	<link rel="icon" type="image/x-icon" href="nal7icon.png">
+</head>
+<body>
+	
+	<div id="main_panel">
+		<div id="input_panel">
+			<div id="title">
+				<h1>
+					Wine Order
+				</h1>
+			</div>
+			<form enctype="application/x-www-form-urlencoded" method="POST">
+				<div id="table">
+					<table>
+						<tr>
+							<td>
+								<div id="name">
+									<span>Ime:</span>
+									<input name="ime" id="ime" placeholder="Ime"><br>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div id="name2">
+									<span>Priimek:</span>
+									<input name="priimek" id="priimek" placeholder="Priimek"><br>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div id="addr">
+									<span>Naslov:</span>
+									<input name="naslov" id="naslov" placeholder="Naslov"><br>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div id="postal">
+									<span>Pošta:</span>
+									<input name="posta" id="posta" placeholder="Pošta"><br>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div id="emailid">
+									<span>Email:</span>
+									<input type="email" name="email" id="email" placeholder="E-mail" pattern=".*@([a-zA-Z0-9]*\.){1,}[a-zA-Z0-9]{2,}"><br>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div id="phoneid">
+									<span>Telefonska:</span>
+									<div id="phone">
+										<input  name="phone_n1" id="phone_n1" pattern="[0-9]{3}" placeholder="###">&nbsp;-
+										<input name="phone_n2" id="phone_n2" pattern="[0-9]{3}" placeholder="###">&nbsp;-
+										<input name="phone_n3" id="phone_n3" pattern="[0-9]{4}" placeholder="####">
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="submit" id="submit" value="Submit"><br>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div id="selector">
+					<ul>
+						<li>
+							<div class="wine_item">
+							rrrrh
+							</div>
+						</li>
+						<li>
+							<div class="wine_item">
+							rrrrh
+							</div>
+						</li>
+						<li>
+							<div class="wine_item">
+							rrrrh
+							</div>
+						</li>
+						<li>
+							<div class="wine_item">
+							rrrrh
+							</div>
+						</li>
+						<li>
+							<div class="wine_item">
+							rrrrh
+							</div>
+						</li>
+						
+					</ul>
+				</div>
+			</form>
+		</div>
+		<div id="bottle_panel">
+			
+		</div>
+	</div>
+</body>
+</html>
