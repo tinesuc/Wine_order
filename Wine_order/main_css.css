@@ -4,12 +4,14 @@
 	--theme-color-1:Indigo;
 	--scale:1.1;
 	--item-border:1px;
+	--num-of-items:3;
 }
 *{
 	margin:0;
 	padding:0;
 	box-sizing: border-box;
 	font-family: Ariel;
+    
 }
 body{
 	height:95vh;
@@ -62,18 +64,21 @@ h1{
 }
 table{
 	width:100%;
+	
 }
 #table{
-	padding:calc(15px*var(--scale));
+	--table-scale:var(--scale);
+    padding:calc(15px*var(--table-scale));
 	width:100%;
 	height:45%;
 	overflow-y: auto;
+    
 }
 input, textarea, select{
 	border:1px solid grey;
 	border-radius:0;
 	line-height:150%;
-	font-size:calc(80%*var(--scale));
+	font-size:calc(100%*var(--table-scale));
 }
 input:focus-visible{
 	outline:1px solid grey;
@@ -87,11 +92,14 @@ h3{
 	margin-top:25px;
 	line-height:0px;
 }
-span{
+:not(td) span{
 	display:inline;
 	width:30%;
 	line-height:calc(250%);
 	font-size:calc(100%*var(--scale));
+}
+td span{
+	font-size:calc(100%*var(--table-scale));
 }
 #name,#name2,#addr,#postal,#emailid,#phoneid{
 	width:100%;
@@ -105,14 +113,14 @@ span{
 	transform: translateY(50%);
 }
 #phone{
-	transform: translateY(calc(30%*var(--scale)*1.2));
+	transform: translateY(calc(30%*var(--table-scale)*1.2));
 }
 #phone_n1, #phone_n2{
-	width:calc(35px*var(--scale));
+	width:calc(35px*var(--table-scale));
 	margin-right:0px;
 }
 #phone_n3{
-	width:calc(40px*var(--scale));
+	width:calc(40px*var(--table-scale));
 }
 #submit{
 	border-radius:2px;
@@ -133,9 +141,14 @@ ul{
 	height:calc(100% - 2vw);
 	overflow-y: scroll;
 }
+@media (hover: none) {
+	ul{
+		padding-right:1vw;
+	}
+}
 li{
 	margin:1vw 0vw;
-	height:calc(25% - 1vw + 0.25*1vw);
+	height:calc(100%/var(--num-of-items) - 1vw + 1vw/var(--num-of-items));
 	border:1px solid;
 	overflow: none;
 }
@@ -150,6 +163,7 @@ li:last-child{
 	height:100%;
 	max-width:100%;
 	display:flex;
+	
 }
 .wine_item > .image{
 	display:inline-block;
@@ -174,11 +188,11 @@ li:last-child{
 	overflow:hidden;
 }
 .text > span {
-	font-size:1.5vw;
+	font-size:0.8rem;
 	display: table-cell;
 	vertical-align: middle;
 }
-.text > span:hover {
+.wine_item:hover > .text > span {
 	animation: leftright 2s infinite alternate ease-in-out;
 }
 .control_pane{
@@ -204,6 +218,7 @@ TODO:
 fix form text to viewport (1.5vw)
 fix background image repeating at large aspect ratio
 set all borders to viewport width (4px = 0.25vw)
+make min aspect 1/1 for center other wise shift left for larger bottle
 
 animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 */
