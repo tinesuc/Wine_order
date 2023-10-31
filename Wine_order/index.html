@@ -5,9 +5,37 @@
 	<title>Naročevanje Vina</title>
 	<link rel="stylesheet" href="main_css.css" type="text/css" media="all" >
 	<link rel="icon" type="image/x-icon" href="images/icon.png">
+	<script>
+        resize_handle = (event) => {
+			boxe = document.getElementById('table')
+            root_scale = window.getComputedStyle(boxe).getPropertyValue('--table-scale');
+			box = boxe.getBoundingClientRect()
+			box2= document.querySelector("#table > table").getBoundingClientRect();
+            scale = root_scale*box.height/box2.height/1.1-0.05
+			boxe.style.setProperty('--table-scale', scale);
+            
+            w = screen.width;
+            h = screen.height;
+            asp = w/h
+            console.log(w+"  "+h+"  "+asp)
+            body = document.querySelector("body")
+            bc_size = parseInt(window.getComputedStyle(body).getPropertyValue('background-size'));
+            console.log(bc_size)
+            console.log(bc_size*asp/(16/9))
+            body.style.setProperty('background-size', bc_size*asp/(16/9));
+		};
+        onloadm = () => {
+            resize_handle(null)
+            resize_handle(null)
+            
+        };
+        addEventListener("resize", resize_handle);
+        //resize_handle(null);
+        
+        
+	</script>
 </head>
-<body>
-	
+<body onLoad="onloadm()">
 	<div id="main_panel">
 		<div id="input_panel">
 			<div id="title">
@@ -89,7 +117,7 @@
 									<span>wurcktzzjkrzzkrkdkdrzkksrzkeugwrjirpgjwkbpopnoimioinjiounzufznumv</span>
 								</div>
 								<div class="control_pane">
-									
+									<input type="checkbox">
 								</div>
 							</div>
 						</li>
