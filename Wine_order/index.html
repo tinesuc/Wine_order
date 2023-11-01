@@ -6,33 +6,66 @@
 	<link rel="stylesheet" href="main_css.css" type="text/css" media="all" >
 	<link rel="icon" type="image/x-icon" href="images/icon.png">
 	<script>
+        
         resize_handle = (event) => {
-			boxe = document.getElementById('table')
+            boxe = document.getElementById('table')
             root_scale = window.getComputedStyle(boxe).getPropertyValue('--table-scale');
 			box = boxe.getBoundingClientRect()
+            console.log("box - #table")
+            console.log(box)
 			box2= document.querySelector("#table > table").getBoundingClientRect();
-            scale = root_scale*box.height/box2.height/1.1-0.05
+            console.log("box2 - table")
+            console.log(box2)
+            scale = root_scale*box.height/box2.height/1.1
 			boxe.style.setProperty('--table-scale', scale);
+            console.log("box - #table - after")
+            console.log(boxe.getBoundingClientRect())
+            console.log("sacele  "+scale)
+            console.log("root sacele  "+root_scale)
             
             w = screen.width;
             h = screen.height;
             asp = w/h
-            console.log(w+"  "+h+"  "+asp)
+            //console.log(w+"  "+h+"  "+asp)
             body = document.querySelector("body")
             bc_size = parseInt(window.getComputedStyle(body).getPropertyValue('background-size'));
-            console.log(bc_size)
-            console.log(bc_size*asp/(16/9))
+            //console.log(bc_size)
+            //console.log(bc_size*asp/(16/9))
             body.style.setProperty('background-size', bc_size*asp/(16/9));
 		};
         onloadm = () => {
-            resize_handle(null)
-            resize_handle(null)
+            //resize_handle(null)
+            //resize_handle(null)
             
         };
-        addEventListener("resize", resize_handle);
+        //addEventListener("resize", resize_handle);
         //resize_handle(null);
         
         
+        
+        input_full = (event, ell) => {
+            if(ell.value.length === parseInt(ell.attributes['maxlength'].value)){
+                ell.nextElementSibling.focus();
+            }
+        }
+        input_empty = (event, ell) => {
+            if(event.key === 'Backspace' && ell.value.length === 0) {
+                ell.previousElementSibling.focus();
+            }
+        }
+        filter_keys = (event, keys, ell) =>{
+            text = ell.value;
+            tout = "";
+            for(char of text){
+                if(keys.includes(char)){
+                    tout += char
+                }
+                ell.value = tout;
+            }
+        }
+        filter_num_code = (event, ell) =>{
+            filter_keys(event, ["0","1","2","3","4","5","6","7","8","9"], ell)
+        }
 	</script>
 </head>
 <body onLoad="onloadm()">
@@ -43,64 +76,69 @@
 					Wine Order
 				</h1>
 			</div>
-			<form enctype="application/x-www-form-urlencoded" method="POST">
+			<form enctype="application/x-www-form-urlencoded" method="POST" onkeydown="return event.key != 'Enter';">
 				<div id="table">
 					<table>
 						<tr>
 							<td>
 								<div id="name">
-									<span>Ime:</span>
-									<input name="ime" id="ime" placeholder="Ime"><br>
+									<label>Ime:
+                                        <input name="ime" id="ime" placeholder="Ime" required><br>
+                                    </label>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div id="name2">
-									<span>Priimek:</span>
-									<input name="priimek" id="priimek" placeholder="Priimek"><br>
+									<label>Priimek:
+                                        <input name="priimek" id="priimek" placeholder="Priimek"  required><br>
+                                    </label>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div id="addr">
-									<span>Naslov:</span>
-									<input name="naslov" id="naslov" placeholder="Naslov"><br>
+									<label>Naslov:
+                                        <input name="naslov" id="naslov" placeholder="Naslov"  required><br>
+                                    </label>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div id="postal">
-									<span>Pošta:</span>
-									<input name="posta" id="posta" placeholder="Pošta"><br>
+									<label>Pošta:
+                                        <input name="posta" id="posta" placeholder="Pošta" required><br>
+                                    </label>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div id="emailid">
-									<span>Email:</span>
-									<input type="email" name="email" id="email" placeholder="E-mail" pattern=".*@([a-zA-Z0-9]*\.){1,}[a-zA-Z0-9]{2,}"><br>
+									<label>Email:
+                                        <input type="email" name="email" id="email" placeholder="E-mail" pattern=".*@([a-zA-Z0-9]*\.){1,}[a-zA-Z0-9]{2,}"><br>
+                                    </label>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div id="phoneid">
-									<span>Telefonska:</span>
-									<div id="phone">
-										<input  name="phone_n1" id="phone_n1" pattern="[0-9]{3}" placeholder="###">&nbsp;-
-										<input name="phone_n2" id="phone_n2" pattern="[0-9]{3}" placeholder="###">&nbsp;-
-										<input name="phone_n3" id="phone_n3" pattern="[0-9]{4}" placeholder="####">
+									<label for="phone_n1">Telefonska:</label>
+                                    <div id="phone">
+										<input maxlength="3" name="phone_n1" id="phone_n1" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this);" placeholder="###">&nbsp;-
+										<input maxlength="3" name="phone_n2" id="phone_n2" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this); input_empty(event, this);" placeholder="###">&nbsp;-
+										<input maxlength="4" name="phone_n3" id="phone_n3" pattern="[0-9]{4}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_empty(event, this)" placeholder="####">
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<input type="submit" id="submit" value="Submit"><br>
+								<input type="submit" id="submit" value="Finish Order"><br>
 							</td>
 						</tr>
 					</table>
@@ -111,10 +149,10 @@
 						<li>
 							<div class="wine_item">
 								<div class="image">
-									<img src="images/mini_bottle_templ.png">
+									<img src="images/mini_bottle_templ.png" alt="Image of bottle">
 								</div>
 								<div class="text">
-									<span>wurcktzzjkrzzkrkdkdrzkksrzkeugwrjirpgjwkbpopnoimioinjiounzufznumv</span>
+									<span>wurcktzzjkrzzkrkdkdrzk</span>
 								</div>
 								<div class="control_pane">
 									<input type="checkbox">
