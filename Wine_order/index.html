@@ -4,43 +4,134 @@
 	<meta charset="UTF-8">
 	<title>Naročevanje Vina</title>
 	<link rel="stylesheet" href="main_css.css" type="text/css" media="all" >
-	<link rel="icon" type="image/x-icon" href="images/icon.png">
+	<link rel="icon" type="image/x-icon" href="images/bottle_icon_temp.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
-        
-        resize_handle = (event) => {
-            boxe = document.getElementById('table')
-            root_scale = window.getComputedStyle(boxe).getPropertyValue('--table-scale');
-			box = boxe.getBoundingClientRect()
-            console.log("box - #table")
-            console.log(box)
-			box2= document.querySelector("#table > table").getBoundingClientRect();
-            console.log("box2 - table")
-            console.log(box2)
-            scale = root_scale*box.height/box2.height/1.1
-			boxe.style.setProperty('--table-scale', scale);
-            console.log("box - #table - after")
-            console.log(boxe.getBoundingClientRect())
-            console.log("sacele  "+scale)
-            console.log("root sacele  "+root_scale)
+        counter = 0;
+        time=0;
+        time2=0;
+        bool=true;
+        bool2=true;
+        manage_input_panel = (event) =>{
+            if(Date.now()-time2>100&&bool2){
+                bool2=false;
+                time2=Date.now();
+                
+                let table_div = document.querySelector(".info_item");
+                let cssWidth = 0;
+                let children = table_div.children;
+                for (let i = 0; i < children.length; i++) {
+                    cssWidth += parseInt(children[i].offsetWidth, 10);
+                }
+                let displayWidth = table_div.clientWidth;
+                
+                tab = document.querySelector('#table');
+                if (displayWidth < cssWidth*0.99&&!tab.classList.contains("folded_input")) {
+                    tab.classList.add("folded_input");
+                }else{
+                    tab = document.querySelector("#table");
+                    tab.classList.remove("folded_input");
+                    cssWidth = 0;
+                    let children = table_div.children;
+                    for (let i = 0; i < children.length; i++) {
+                        cssWidth += parseInt(children[i].offsetWidth, 10);
+                    }
+                    let displayWidth = table_div.clientWidth;
+                    if (displayWidth < cssWidth*0.99) {
+                        scaltab = document.querySelector('#table');
+                        tab.classList.add("folded_input");
+                    }
+                }
+                bool2=true;
+            }
+        }
+        manage_wine_items = (event, runs) =>{
             
-            w = screen.width;
-            h = screen.height;
-            asp = w/h
-            //console.log(w+"  "+h+"  "+asp)
-            body = document.querySelector("body")
-            bc_size = parseInt(window.getComputedStyle(body).getPropertyValue('background-size'));
-            //console.log(bc_size)
-            //console.log(bc_size*asp/(16/9))
-            body.style.setProperty('background-size', bc_size*asp/(16/9));
+            //-----wine list items count-----aspect ratio:6-10----item count 3-6/7---||---------------low frame aspect-ratio: wrap control_panel------flex-flow: column;---liheight*2-+-flex corection/2
+            if(Date.now()-time>100&&bool){
+                bool=false;
+                time=Date.now();
+                for(i=0;i<runs;i++){
+                    let con_pane = document.querySelector(".control_pane");
+                    let scrollWidth = con_pane.scrollWidth;
+                    let displayWidth = con_pane.clientWidth;
+                    let root = document.querySelector(":root");
+                    let scale =  parseInt(window.getComputedStyle(root).getPropertyValue('--num-of-items'));
+                    //console.log(root.style);    
+
+                    if (displayWidth < scrollWidth) {
+                        scale +=1;
+                        if(scale>7){
+                            scale /=2;
+                            sel = document.querySelector('#selector');
+                            sel.classList.add("folded_wine");
+                        }
+                        root.style.setProperty('--num-of-items', Math.min(scale,7));
+                        //console.log("cliped  "+(counter++)+"   "+Math.min(scale+1,7));
+                    }else{
+                        sel = document.querySelector("#selector");
+                        if(scale<=4&&sel.classList.contains("folded_wine")){
+                            scale *=2;
+                            sel.classList.remove("folded_wine");
+                        }
+                        scale -=1;
+                        root.style.setProperty('--num-of-items', Math.max(scale,1));
+                        scrollWidth = con_pane.scrollWidth;
+                        displayWidth = con_pane.clientWidth;
+                        root = document.querySelector(":root");
+                        scale =  parseInt(window.getComputedStyle(root).getPropertyValue('--num-of-items'));
+                        if (displayWidth < scrollWidth) {
+                            scale +=1;
+                            if(scale>7){
+                                scale /=2;
+                                sel = document.querySelector('#selector');
+                                sel.classList.add("folded_wine");
+                            }
+                            root.style.setProperty('--num-of-items', Math.min(scale,7));
+                        }
+                    }
+                }
+                
+                bool=true;
+            }
+            
+            
+            /*
+                wine_item
+                    d:block
+                wine_pane
+                    height:50%
+                control_pane
+                    max:width:100%
+                    height:50%s
+             */
+            
+        }
+        resize_handle = (event) => {
+            //----overflowing text-----
+            let container = document.querySelector(".text");
+            let padding_left = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-left'));
+            let padding_right = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-right'));
+            let text = document.querySelector("#selector");
+            if (container.clientWidth-padding_left-padding_right < text.clientWidth) {
+                text.classList.add("animate");
+            }else{
+                text.classList.remove("animate");
+            }
+            //-------------
+            manage_input_panel(event);
+            manage_wine_items(event, 1);
 		};
         onloadm = () => {
-            //resize_handle(null)
-            //resize_handle(null)
+            //time=Date.now();
+            //console.log(time+"   tz");
+            manage_input_panel(null);
+            manage_wine_items(null, 7);
+            resize_handle(null)
+            
             
         };
-        //addEventListener("resize", resize_handle);
-        //resize_handle(null);
-        
+        addEventListener("resize", resize_handle);
         
         
         input_full = (event, ell) => {
@@ -60,11 +151,219 @@
                 if(keys.includes(char)){
                     tout += char
                 }
-                ell.value = tout;
+                
             }
+            ell.value="";
+            ell.value = tout;
+        }
+        clamp = (num, min, max, step) =>{
+            if(num=="NaN"){num="0";return;}
+            num = Math.max(0,num-min);
+            num = Math.min(max,num%step);
+            num = num + min;
+            return num;
         }
         filter_num_code = (event, ell) =>{
             filter_keys(event, ["0","1","2","3","4","5","6","7","8","9"], ell)
+        }
+        filter_num_clamp = (ell, min, max, step) =>{
+            num = Number(ell.value);
+            ell.value=clamp(num, min, max, step);
+        }
+        reset_sel = (event, ell) =>{
+            inp = ell.parentElement.parentElement.querySelector(".input > input");
+            inp.value="0";
+            parent = ell.closest('.wine_item');
+            parent.classList.remove("ordered");
+            //remove class for background color
+        }
+        num_input = (event, ell) => {
+            num = parseInt(ell.value);
+            if(num =="NaN"){num=0;}
+            parent = ell.closest('.wine_item');
+            parent.classList.add("ordered");
+            if(num ==0 || ell.value==""){
+                parent.classList.remove("ordered");
+            }
+            ell.value=num;
+        }
+		set_zero = (event, ell) => {
+            if(ell.value==""){
+                ell.value=0;
+            }
+        }
+        cut_to_2 = (num) =>{
+            
+        }
+        
+        form_submit = (event, ell) => {
+            info_in = document.querySelectorAll("#table li > div");
+            invalids = [];
+            for(i=0;i<5;i++){
+                inn = info_in[i];
+                input = inn.querySelector(".input > input");
+                id = input.id;
+                value = input.value;
+                if(value==""&&id!="email" || id=="email"&&!input.checkValidity()){
+                    invalids.push(id);
+                    continue;
+                }
+                if(id=="email"){value="<span style='color:rgb(230,230,230);'>---</span>"}
+                dest = document.querySelector("#s_"+id+" > .s_input");
+                dest.innerHTML=value;
+                console.log((counter++)+"  "+id+"   "+value);
+                console.log(invalids);
+            }
+            phn1 = document.querySelector("#phone_n1").value;
+            phn2 = document.querySelector("#phone_n2").value;
+            phn3 = document.querySelector("#phone_n3").value;
+            dest = document.querySelector("#s_phone > .s_input");
+            if(!(phn1.length==3&&phn2.length==3&&phn3.length==4)){
+                if(!(phn1.length==0&&phn2.length==0&&phn3.length==0)){
+                    invalids.push("telefonska stevilka");
+                }else{
+                    dest.innerHTML="<span style='color:rgb(230,230,230);'>---</span>"
+                }
+            }else{
+                dest.innerHTML=phn1+"-"+phn2+"-"+phn3;
+            }
+            
+            
+            if(invalids.length!=0){
+                msg = "";
+                for(i=0;i<invalids.length ;i++){
+                    if(i!=invalids.length-1){
+                        msg+= "<span style='color:red;'>"+invalids[i]+"</span>, "
+                    }else{
+                        msg+= "<span style='color:red;'>"+invalids[i]+"</span>"
+                    }
+                }
+                Swal.fire({
+                    title: '<strong>Napečni vnosi</strong>',
+                    icon: 'error',
+                    html:"Prosim pravilno vnesite naslednje podatke: "+msg+".",
+                    showCloseButton: true,
+                })
+                
+                return;
+            }
+            
+            
+            
+            orr_wines = document.querySelectorAll("#selector .wine_item");
+            ordered = [];
+            taxMap=new Map();
+            totalCost=0;
+            totalTax=0;
+            baseMap=new Map();
+            for(i=0;i<orr_wines.length ;i++){
+                name =  orr_wines[i].querySelector(".text > span").innerHTML;
+                price = orr_wines[i].querySelector(".price > span").innerHTML;
+                price = Number(price.substring(0, price.length-1));
+                amount = parseInt(orr_wines[i].querySelector(".input > input").value);
+                tax = 0.22;
+                console.log((counter++)+"   "+name+"  "+price+"  "+amount);
+                
+                
+                
+                if(amount!=0){
+                    ordered.push({
+                        name:name,
+                        price:price,
+                        amount:amount,
+                        tax:tax,
+                        cost:(price*amount)
+                    });
+                    prevTax = Number(taxMap.get(tax));
+                    if(isNaN(prevTax)){prevTax=0;}
+                    taxMap.set(tax,(prevTax+tax*price*amount))
+                    
+                    prevBase = Number(baseMap.get(tax));
+                    if(isNaN(prevBase)){prevBase=0;}
+                    baseMap.set(tax,(prevBase+(1-tax)*price*amount))
+                    
+                    totalCost+=price*amount;
+                    totalTax+=tax*price*amount;
+                }
+                
+                
+            }
+            
+            
+            if(ordered.length==0){
+                Swal.fire({
+                    title: '<strong>Ni naročila</strong>',
+                    icon: 'error',
+                    html:"Prosimo da izberete vina za nakup.",
+                    showCloseButton: true,
+                })
+                return;
+            }
+            
+            rec_body = document.querySelector("#s_wi_tb");
+            text="";
+            for(i=0;i<ordered.length;i++){
+                item=ordered[i];
+                text+="<tr style='width:100%;'>" +
+                    "   <td class='s_name' colspan='2' style='text-align:left;'>"+item.name+"</td>"+
+                    "   <td class='s_amount' style='width:33%; text-align:right;'>kos "+item.amount+"</td>"+
+                    "</tr>"+
+                    "<tr style='width:100%;'>"+
+                    "   <td class='s_tax' style='width:33%; text-align:right;'>"+(item.tax*100).toFixed(2)+"%</td>"+
+                    "   <td class='s_price' style='width:33%; text-align:right;'>"+item.price+"</td>"+
+                    "   <td class='s_cost' style='width:33%; text-align:right;'>"+item.cost.toFixed(2)+"</td>"+
+                    "</tr>";
+            }
+            rec_body.innerHTML=text;
+            rec_total = document.querySelector("#s_total");
+            rec_total.innerHTML=totalCost.toFixed(2);
+            //**************************************************************
+            
+            rec_tax = document.querySelector("#s_wi_tx");
+            text="";
+            mapTaxK = Array.from(taxMap.keys());
+            mapBaseV = Array.from(baseMap.values());
+            mapTaxV = Array.from(taxMap.values());
+            
+            
+            for(i=0;i < mapTaxK.length;i++){
+                text+="<tr>"+
+                        "<td style='text-align:left;'>DDV</td>"+
+                        "<td style='text-align:right;'>"+((mapTaxK[i]*100).toFixed(2))+"%</td>"+
+                        "<td style='text-align:right;'>"+(mapBaseV[i].toFixed(2))+"</td>"+
+                        "<td style='text-align:right;'>"+(mapTaxV[i].toFixed(2))+"</td>"+
+                    "</tr>";
+            }
+            rec_tax.innerHTML=text;
+            rec_tax_total = document.querySelector("#s_tax_total");
+            rec_tax_total.innerHTML=totalTax.toFixed(2);
+            
+            
+            templ = document.querySelector("#swal_templ").innerHTML;
+            Swal.fire({
+                title: '<strong>Izpisek vnesenih podatkov</strong>',
+                icon: 'info',
+                html:templ,
+                showCloseButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText:'Potrdi nakup',
+                cancelButtonText:'Prekliči',
+                didOpen: () => Swal.getConfirmButton().focus()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title:'Potrjeno',
+                        html:'Vaš nakup je bil potrjen.',
+                        icon:'success',
+                        timer: 3000,
+                        timerProgressBar: true,
+                    })
+                }
+            })
+            
+            
+            
         }
 	</script>
 </head>
@@ -73,120 +372,264 @@
 		<div id="input_panel">
 			<div id="title">
 				<h1>
-					Wine Order
+					Naročanje Vina
 				</h1>
 			</div>
 			<form enctype="application/x-www-form-urlencoded" method="POST" onkeydown="return event.key != 'Enter';">
 				<div id="table">
-					<table>
-						<tr>
-							<td>
-								<div id="name">
-									<label>Ime:
-                                        <input name="ime" id="ime" placeholder="Ime" required><br>
-                                    </label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div id="name2">
-									<label>Priimek:
-                                        <input name="priimek" id="priimek" placeholder="Priimek"  required><br>
-                                    </label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div id="addr">
-									<label>Naslov:
-                                        <input name="naslov" id="naslov" placeholder="Naslov"  required><br>
-                                    </label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div id="postal">
-									<label>Pošta:
-                                        <input name="posta" id="posta" placeholder="Pošta" required><br>
-                                    </label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div id="emailid">
-									<label>Email:
-                                        <input type="email" name="email" id="email" placeholder="E-mail" pattern=".*@([a-zA-Z0-9]*\.){1,}[a-zA-Z0-9]{2,}"><br>
-                                    </label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div id="phoneid">
-									<label for="phone_n1">Telefonska:</label>
+					<ul>
+						<li>
+                            <div id="name" class="info_item">
+                                <div class="label">
+                                    <label for="ime">Ime:<span class="req">*</span></label>
+                                </div>
+                                <div class="input">
+                                    <input value="" name="ime" id="ime" placeholder="Ime" required>
+                                </div>
+                            </div>
+						</li>
+						<li>
+                            <div id="name2" class="info_item">
+                                <div class="label">
+                                    <label for="priimek">Priimek:<span class="req">*</span></label>
+                                </div>
+                                <div class="input">
+                                    <input value="" name="priimek" id="priimek" placeholder="Priimek"  required>
+                                </div>
+                            </div>
+						</li>
+						<li>
+                            <div id="addr" class="info_item">
+                                <div class="label">
+                                    <label for="naslov">Naslov:<span class="req">*</span></label>
+                                </div>
+                                <div class="input">
+                                    <input value="" name="naslov" id="naslov" placeholder="Naslov"  required>
+                                </div>
+                            </div>
+						</li>
+						<li>
+                            <div id="postal" class="info_item">
+                                <div class="label">
+                                    <label for="posta">Pošta:<span class="req">*</span></label>
+                                </div>
+                                <div class="input">
+                                    <input value="" name="posta" id="posta" placeholder="Pošta" required>
+                                </div>
+                            </div>
+						</li>
+						<li>
+                            <div id="emailid" class="info_item">
+                                <div class="label">
+                                    <label for="email">Email:</label>
+                                </div>
+                                <div class="input">
+                                    <input value="" type="email" name="email" id="email" placeholder="E-mail" pattern=".*@([a-zA-Z0-9]*\.){1,}[a-zA-Z0-9]{2,}">
+                                </div>
+                            </div>
+						</li>
+						<li>
+                            <div id="phoneid" class="info_item">
+                                <div class="label">
+                                    <label for="phone_n1">Telefonska:</label>
+                                </div>
+                                <div class="input">
                                     <div id="phone">
-										<input maxlength="3" name="phone_n1" id="phone_n1" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this);" placeholder="###">&nbsp;-
-										<input maxlength="3" name="phone_n2" id="phone_n2" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this); input_empty(event, this);" placeholder="###">&nbsp;-
-										<input maxlength="4" name="phone_n3" id="phone_n3" pattern="[0-9]{4}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_empty(event, this)" placeholder="####">
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input type="submit" id="submit" value="Finish Order"><br>
-							</td>
-						</tr>
-					</table>
+                                        <input maxlength="3" name="phone_n1" id="phone_n1" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this);" placeholder="###">&nbsp;-
+                                        <input maxlength="3" name="phone_n2" id="phone_n2" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this); input_empty(event, this);" placeholder="###">&nbsp;-
+                                        <input maxlength="4" name="phone_n3" id="phone_n3" pattern="[0-9]{4}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_empty(event, this)" placeholder="####">
+                                    </div>
+                                </div>
+                            </div>
+						</li>
+						<li>
+                            <button type="button" id="submit_swal" onclick="form_submit(event, this);">Zaključi</button>
+                            <input type="submit" id="submit" value="Finish Order"><br>
+                            
+						</li>
+					</ul>
 				</div>
 				
 				<div id="selector">
 					<ul>
 						<li>
 							<div class="wine_item">
-								<div class="image">
-									<img src="images/mini_bottle_templ.png" alt="Image of bottle">
-								</div>
-								<div class="text">
-									<span>wurcktzzjkrzzkrkdkdrzk</span>
+                                <div class="wine_pane">
+                                    <div class="image">
+                                        <img src="images/mini_bottle_templ.png" alt="Image of bottle">
+                                    </div>
+                                    <div class="text">
+                                        <span>wurcktzzjkrzzkrkdkdrzk</span>
+                                        <div class="fade-left"></div>
+                                        <div class="fade-right"></div>
+                                    </div>
 								</div>
 								<div class="control_pane">
-									<input type="checkbox">
+                                    <div class="price">
+                                        <span>150.99€</span>
+                                    </div>
+                                    <div class="input">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                    </div>
+                                    <div class="image">
+                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
 								</div>
 							</div>
 						</li>
 						<li>
 							<div class="wine_item">
-							rrrrh
+                                <div class="wine_pane">
+                                    <div class="image">
+                                        <img src="images/mini_bottle_templ.png" alt="Image of bottle">
+                                    </div>
+                                    <div class="text">
+                                        <span>wurcktzzjkrzzkrkdkdrzk</span>
+                                        <div class="fade-left"></div>
+                                        <div class="fade-right"></div>
+                                    </div>
+								</div>
+								<div class="control_pane">
+                                    <div class="price">
+                                        <span>150.99€</span>
+                                    </div>
+                                    <div class="input">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                    </div>
+                                    <div class="image">
+                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
+								</div>
 							</div>
 						</li>
-						<li>
-							<div class="wine_item">
-							rrrrh
-							</div>
-						</li>
-						<li>
-							<div class="wine_item">
-							rrrrh
-							</div>
-						</li>
-						<li>
-							<div class="wine_item">
-							rrrrh
-							</div>
-						</li>
-						
+
 					</ul>
 				</div>
 			</form>
 		</div>
 		<div id="bottle_panel">
-			
+            <!-- 5-neck 15-bottle 60-high -->
+            <img src="images/side_bottle.png" alt="image of a bottle">
 		</div>
 	</div>
+
+    <div style="display:none;" id="swal_templ">
+        <div id="s_">
+            <div id="s_info">
+                <ul>
+                    <li id="s_ime">
+                        <div class="s_label">
+                            Ime:
+                        </div>
+                        <div class="s_input">
+                        </div>
+                    </li>
+                    <li id="s_priimek">
+                        <div class="s_label">
+                            Priimek:
+                        </div>
+                        <div class="s_input">
+                        </div>
+                    </li>
+                    <li id="s_naslov">
+                        <div class="s_label">
+                            Naslov:
+                        </div>
+                        <div class="s_input">
+                        </div>
+                    </li>
+                    <li id="s_posta">
+                        <div class="s_label">
+                            Pošta:
+                        </div>
+                        <div class="s_input">
+                        </div>
+                    </li>
+                    <li id="s_email">
+                        <div class="s_label">
+                            Email:
+                        </div>
+                        <div class="s_input">
+                        </div>
+                    </li>
+                    <li id="s_phone">
+                        <div class="s_label">
+                            Telefonska:
+                        </div>
+                        <div class="s_input">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <br>
+            <hr style="margin: 1ex 0;">
+            <table id="s_wines" style="width:100%;">
+                <thead id="s_wi_th">
+                    <tr style="width:100%;">
+                        <td class="s_name" colspan="2" style="text-align:left;">Naziv</td>
+                        <td class="s_amount" style="width:33%; text-align:right;">Količina</td>
+                    </tr>
+                    <tr style="width:100%;">
+                        <td class="s_tax" style="width:33%; text-align:right;">St.DDV</td>
+                        <td class="s_price" style="width:33%; text-align:right;">Cena</td>
+                        <td class="s_cost" style="width:33%; text-align:right;">Znesek</td>
+                    </tr>
+                    <tr style="width:100%;"><td>&nbsp;</td></tr>
+                </thead>
+                <tbody id="s_wi_tb">
+                    
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <hr style="margin: 1ex 0;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:left;">
+                            <strong>ZA PLAČILO EUR</strong>
+                        </td>
+                        <td style="width:33%; text-align:right;">
+                            <strong id="s_total"></strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <br>
+            <table style="width:100%;">
+                <thead>
+                    <tr>
+                        <td style="text-align:left;">Davek</td>
+                        <td style="text-align:right;">St.DDV</td>
+                        <td style="text-align:right;">Osnova</td>
+                        <td style="text-align:right;">Zn.DDV</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <hr style="margin: 1ex 0;">
+                        </td>
+                    </tr>
+                </thead>
+                <tbody id="s_wi_tx">
+                    
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;" colspan="3">
+                            SKUPAJ DAVEK EUR:
+                        </td>
+                        <td id="s_tax_total" style="text-align:right;">
+                            
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
