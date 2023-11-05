@@ -4,14 +4,30 @@
 	--theme-color-1:Indigo;
 	--scale:1.1;
 	--item-border:0.0625vw;
-	--num-of-items:3;
+	--num-of-items:4;
+    --default-num:3.5;
+    --ord_bg_color:white;
+    --ord_bg_color_light:white;
 }
 *{
 	margin:0;
 	padding:0;
 	box-sizing: border-box;
 	font-family: Ariel;
-    
+    user-select:none;
+}
+.ordered{
+    --ord_bg_color:#68dc68;
+    --ord_bg_color_light:#8ef48e;
+}
+span.req{
+    color:red;
+}
+/*.folded_input .info_item > .input{
+    min-width:10ch !important;
+}*/
+span, label{
+    user-select:text;
 }
 body{
 	height:95vh;
@@ -49,6 +65,24 @@ body{
 		bottle max width  = 0.5 main panel width
 	*/
 }
+#bottle_panel > img{
+    height:100%;
+    image-rendering: pixelated;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #title{
 	width:100%;
 	height:min(9vh, 5.5vw);
@@ -93,30 +127,48 @@ h3{
 	line-height:0;
 }
 label{
-	display:inline;
-	width:30%;
 	line-height:4vh;
 	font-size:2.5vh;
     vertical-align: top;
 }
-tr{
-    line-height:4.5vh;
+ul{
+	list-style-type:none;
 }
+/*#table li{
+    line-height:4.5vh;
+}*/
 td span{
 	font-size:2.5vh;
 }
+#table li > div > .label{
+    flex:1;
+    display:inline-block;
+    width:30%;
+    min-width:12.1ch;
+}
+#table li > div > .label > label{
+    min-width:100%;
+}
+#table li > div > .input{
+    display:inline-block;
+    width:60%;
+    min-width:22ch;
+}
+#table li > div > .input > input{
+    min-width:100%;
+}
+
 /****************INPUTS***********/
 #name,#name2,#addr,#postal,#emailid,#phoneid{
 	width:100%;
-    line-height:4vh;
-	display:inline-block;
+    /*line-height:4vh;*/
+	display:flex;
 }
 #ime,#priimek,#posta,#naslov,#email,#phone{
-	width:60%;
+	width:100%;
 	float:right;
-	line-height:1vh;
-	margin:auto;
-	transform: translateY(10%);
+	/*line-height:1vh;*/
+	/*margin:auto;*/
 }
 #phone{
     font-size:2.5vh;
@@ -129,11 +181,17 @@ td span{
 	width:4.4ch;
 }
 #submit{
-	border-radius:0.125vw;
+    display:none;
+}
+#submit_swal{
+	border-radius:0.25vw;
 	margin-top:0.625vw;
     float:right;
     position:relative;
     right:1vw;
+    height: 4vh;
+    width: 8vh;
+    font-size: 2vh;
 }
 /****************************************/
 form{
@@ -145,41 +203,57 @@ form{
 	border:0.25vw solid gray;
 	height:calc(55% - 2*1vw);
 }
-ul{
+#selector ul{
 	margin:1vw 0vw 1vw 1vw;
 	list-style-type:none;
 	height:calc(100% - 2vw);
 	overflow-y: scroll;
 }
 @media (hover: none) {
-	ul{
+	#selector ul{
 		padding-right:1vw;
 	}
 }
-li{
+#selector li{
 	margin:1vw 0vw;
 	height:calc(100%/var(--num-of-items) - 1vw + 1vw/var(--num-of-items));
 	border:0.0625vw solid;
 	overflow: none;
 }
-li:first-child{
+#selector li:first-child{
 	margin:0vw 0vw 1vw 0vw;
 }
-li:last-child{
+#selector li:last-child{
 	margin:1vw 0vw 0vw 0vw;
 }
+
+/***********wine stuff*************/
+
 
 .wine_item{
 	height:100%;
 	max-width:100%;
 	display:flex;
-	
+	background-color: var(--ord_bg_color);
+
 }
-.wine_item > .image{
+.wine_pane{
+	flex:1;
+	/*float:right;*/
+    margin:auto;
+    display:flex;
+    justify-content: left;
+    align-items: center;
+    position: relative;
+    top: 0;
+    overflow: hidden;
+    height:100%;
+}
+.wine_pane > .image{
 	display:inline-block;
     height: 100%;
 }
-.wine_item > .image > img{
+.wine_pane > .image > img{
 	max-height:100%;
 	min-height:100%;
 }
@@ -193,24 +267,48 @@ li:last-child{
 	align-items: center;
 	position:relative;
 	top:0;
-	padding-left:1vw;
 	flex: 1;
-	overflow:hidden;
+    padding-left: 1vw;
+    padding-right: 1vw;
+	overflow:clip;
+    basckground:rgb(255 255 255 / 0%);
+}
+.text .fade-left{
+    width:1vw;
+    height:100%;    
+    position:absolute;
+    left:0;
+    top:0;
+    background: linear-gradient(90deg, var(--ord_bg_color) 0px, rgb(255 255 255 / 0%) 100%);
+}
+.text .fade-right{
+    width:1vw;
+    height:100%;    
+    position:absolute;
+    right:0;
+    top:0;
+    background: linear-gradient(270deg, var(--ord_bg_color) 0px, rgb(255 255 255 / 0%) 100%);
 }
 .text > span {
-	font-size:3.2vh;
+	font-size:calc(3.2vh / var(--num-of-items) * var(--default-num));
 	display: table-cell;
 	vertical-align: middle;
     position:relative;
 }
-.wine_item:hover > .text > span {
+.animate .wine_item:hover  .text > span{
 	animation: leftright 2s infinite alternate ease-in-out;
     
 }
 .control_pane{
 	min-width:40%;
 	max-width:40%;
-	float:right;
+	/*float:right;*/
+    display:flex;
+    justify-content: left;
+    align-items: center;
+    position: relative;
+    top: 0;
+    overflow: hidden;
 }
 @keyframes leftright {
   0%,
@@ -225,15 +323,99 @@ li:last-child{
   }
 }
 
-
-
+.control_pane > .price{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:0.5vw;
+    margin-right:0.5vw;
+}
+.control_pane > .price > span{
+    font-size:calc(2.5vh / var(--num-of-items) * var(--default-num));
+	display: table-cell;
+	vertical-align: middle;
+    position:relative;
+}
+.control_pane > .input{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex:1;
+}
+.control_pane > .input > input{
+    font-size:calc(3.5vh / var(--num-of-items) * var(--default-num));
+    vertical-align: middle;
+    min-width:3.3ch;
+    width:100%;
+    background-color: var(--ord_bg_color_light);
+}
+.control_pane > .input > input::selection {
+    background: rgba(0,0,0,0);
+}
+:invalid:not(form, [value=""]){
+    background-color:rgb(240,40,10);
+}
+.control_pane > .image{
+    height:100%;
+    aspect-ratio:1/1;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.control_pane > .image > img{
+    height:40%;
+    cursor: pointer;
+}
+.folded_wine .wine_item{
+    display:block;
+}
+.folded_wine .wine_pane{
+    height:50%;
+}
+.folded_wine .control_pane{
+    height:50%;
+    max-width:100%;
+}
+.folded_input .info_item{
+    display:block !important;
+}
+.folded_input .info_item > div{
+    width:100% !important;
+}
+.folded_input .info_item > .label{
+    text-align:center !important;
+}
+@media (max-aspect-ratio: 0.8) {
+    .info_item{
+        display:block !important;
+    }
+    .info_item > div{
+        width:100% !important;
+    }
+    .info_item > .label{
+        text-align:center !important;
+    }
+}
 /* 
 TODO:
-fix form text to viewport (1.5vw)
 fix background image repeating at large aspect ratio
-make min aspect 1/1 for center other wise shift left for larger bottle
+make min aspect 1/1 for center other wise shift left for larger bottle --> flex box for name/input
++wrap input fields
+
 
 animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 */
 
+#s_info li{
+    display:flex;
+}
+.s_label{
+    display:inline-block;
+    width:40%;
+    text-align:left;
+}
+.s_input{
+    flex:1;
+    text-align:right;
+}
 
