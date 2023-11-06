@@ -122,13 +122,83 @@
             manage_input_panel(event);
             manage_wine_items(event, 1);
 		};
+        function stackCanvas(c1, c2) {
+            
+            d1 = c1.getImageData(0, 0, c1.canvas.width, c1.canvas.height).data;
+            d2 = c2.getImageData(0, 0, c2.canvas.width, c2.canvas.height).data;
+            if(d1.length!=d2.length){
+                console.log((counter++)+"   not same size");
+            }
+            canva = document.createElement('canvas');
+            cO = canva.getContext("2d");
+            cO.fillRect(0, 0, c1.canvas.width, c1.canvas.height);
+            dO = cO.getImageData(0,0,c1.canvas.width, c1.canvas.height);
+            for(i=3;i<d1.length;i+=4){
+                a1 = d1[i];
+                a2 = d2[i];
+                r1 = d1[i-1];
+                r2 = d2[i-1];
+                g1 = d1[i-2];
+                g2 = d2[i-2];
+                b1 = d1[i-3];
+                b2 = d2[i-3];
+                
+                a = a2;
+                r = ((255 - a2)*r1 + a2*r2)/255;
+                g = ((255 - a2)*g1 + a2*g2)/255;
+                b = ((255 - a2)*b1 + a2*b2)/255;
+                
+                dO[i] = a;
+                dO[i-1] = r;
+                dO[i-2] = g;
+                dO[i-3] = b;
+            }
+            console.log(dO);
+            cO.putImageData(dO,0,0);
+            return cO;
+        }
+        
+        draw_bottle = () =>{
+            canvas = document.querySelector("#canvas");
+            ct = canvas.getContext("2d");
+            /*
+            imgM = new Image(15,60);
+            imgM.src = "images/side_bottle_mask.png?khzvbkjn";
+            canvasM = document.createElement('canvas');
+            mask = canvasM.getContext('2d');
+            
+            /*img = document.getElementById('mask');
+            canvas.width = img.width;
+            canvas.height = img.height;*/
+            /*imgM.onload = function() {
+                mask.drawImage(imgM, 0, 0, imgM.width,imgM.height,0,0,ct.canvas.width,ct.canvas.height);
+                //console.log(mask.getImageData(0,0,mask.canvas.width,mask.canvas.height));
+                ret = stackCanvas(ct, mask);
+                ct.putImageData(ret.getImageData(0,0,ret.canvas.width,ret.canvas.height),0,0);
+
+
+                //ct.fillStyle = 
+                ct.fillRect(0, 0, canvas.width, canvas.height);
+                console.log("   "+mask.width+"   "+mask.height+"   "+canvas.width+"   "+canvas.height);
+
+                
+            };
+            */
+            
+            
+            
+            ct.fillRect(0, 0, canvas.width, canvas.height);
+
+        }
+        
+        
         onloadm = () => {
             //time=Date.now();
             //console.log(time+"   tz");
             manage_input_panel(null);
             manage_wine_items(null, 7);
-            resize_handle(null)
-            
+            resize_handle(null);
+            draw_bottle();
             
         };
         addEventListener("resize", resize_handle);
@@ -508,8 +578,13 @@
 			</form>
 		</div>
 		<div id="bottle_panel">
-            <!-- 5-neck 15-bottle 60-high -->
-            <img src="images/side_bottle.png" alt="image of a bottle">
+            <div id="bottle_cont">
+                <!-- 5-neck 15-bottle 60-high -->
+                <canvas id="canvas"></canvas>
+                
+            </div>
+            <!--<img id="mask" src="images/side_bottle_mask.png" alt="image of a bottle">-->
+            <img id="bottle" src="images/side_bottle.png" alt="image of a bottle">
 		</div>
 	</div>
 
