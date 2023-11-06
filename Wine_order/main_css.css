@@ -447,7 +447,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
     top: 0;
     left: 0;
 
-    /*-webkit-mask-image: url(images/side_bottle_mask.png);*/
+    -webkit-mask-image: url(images/side_bottle_mask.png);
     mask-image: url(images/side_bottle_mask.png);
     mask-mode: alpha;
     -webkit-mask-mode: alpha;
