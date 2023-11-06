@@ -9,6 +9,7 @@
     --ord_bg_color:white;
     --ord_bg_color_light:white;
     --mph:90vh;
+	--zoom:1;
 }
 *{
 	margin:0;
