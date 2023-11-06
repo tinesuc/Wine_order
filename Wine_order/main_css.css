@@ -416,7 +416,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 
 @container bottle_panel (width > 0px){
     #canvas, #mask, #bottle{
-        height:100%;
+        
         image-rendering: pixelated;
     }
     
