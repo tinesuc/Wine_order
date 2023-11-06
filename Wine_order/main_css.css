@@ -419,21 +419,10 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
         height:100%;
         image-rendering: pixelated;
     }
-    #canvas{
-        aspect-ratio:1/4;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        /*
-        -webkit-mask-image: url(images/side_bottle_mask2.svg);
-        mask-image: url(images/side_bottle_mask2.svg);
-        mask-mode: alpha;
-        -webkit-mask-mode: alpha;*/
-    }
+    
     #bottle_cont{
         aspect-ratio:1/4;
-        height: 100%;
+        height: 60px;
         position: absolute;
         top: 0;
         left: 0;
@@ -442,6 +431,19 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
         mask-image: url(images/side_bottle_mask.png);
         mask-mode: alpha;
         -webkit-mask-mode: alpha;
+        
+        -webkit-mask-repeat:no-repeat;
+        mask-repeat:no-repeat;
+        
+        
+    }
+    
+    #canvas{
+        aspect-ratio:1/4;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
     #mask{
         position: absolute;
@@ -454,7 +456,9 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
         mix-blend-mode: normal;
     }
     
-    
+    #actual_bottle{
+        transform: scale(11) translate(6px, 27px);
+    }
     
     
     
