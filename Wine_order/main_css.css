@@ -8,6 +8,7 @@
     --default-num:3.5;
     --ord_bg_color:white;
     --ord_bg_color_light:white;
+    --mph:90vh;
 }
 *{
 	margin:0;
@@ -46,7 +47,7 @@ body{
 #main_panel{
 	margin-left:calc(50% - var(--in-pannel-width)/2);
 	width: calc(var(--bottle-pannel-width) + var(--in-pannel-width));
-	height: 90vh;
+	height: var(--mph);
 	margin-top: 5vh;
 }
 #input_panel{
@@ -402,11 +403,11 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 
 
 #bottle_panel{
-    --sc-fac:0.2;
+    --sc-fac:calc(0.35 / var(--zoom));
 	background-color:blue;
 	/*width: var(--bottle-pannel-width);
 	*/
-    height:400vh;
+    height:1800px;
     
 	display:inline-block;
 	/*
@@ -414,7 +415,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 		bottle max width  = 0.5 main panel width
 	*/
     
-    transform: scale(var(--sc-fac)) translate(calc(-30vw / var(--sc-fac)), calc(0vh / var(--sc-fac)));
+    transform: scale(var(--sc-fac)) translate(calc(var(--in-pannel-width)*2 / 3 / var(--sc-fac)), calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
     
     -webkit-transform-origin-x: left;
     transform-origin-x: left;
@@ -473,7 +474,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
     position: absolute;
     z-index: 11;
     mix-blend-mode: normal;
-    height:400vh
+    height:1800px;
 }
 
 #actual_bottle{
