@@ -415,7 +415,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 		bottle max width  = 0.5 main panel width
 	*/
     
-    transform: scale(var(--sc-fac)) translate(calc(var(--in-pannel-width)*2 / 3 / var(--sc-fac)), calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
+    transform: scale(var(--sc-fac)) translate(0, calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
     
     -webkit-transform-origin-x: left;
     transform-origin-x: left;
