@@ -415,6 +415,10 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 }
 
 @container bottle_panel (width > 0px){
+}
+
+
+@container bottle (width > 0px){
     #canvas, #mask, #bottle{
         
         image-rendering: pixelated;
@@ -422,7 +426,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
     
     #bottle_cont{
         aspect-ratio:1/4;
-        height: 60px;
+        height: 100cqh;
         position: absolute;
         top: 0;
         left: 0;
@@ -454,18 +458,14 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
         position: absolute;
         z-index: 11;
         mix-blend-mode: normal;
+        container-name: bottle;
     }
     
     #actual_bottle{
-        transform: scale(11) translate(6px, 27px);
+        transform: scale(0.5) translate(6px, 27px);
     }
     
-    
-    
 }
-
-
-
 
 
 
