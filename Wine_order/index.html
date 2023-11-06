@@ -172,11 +172,13 @@
             imgM.src = "images/side_bottle_mask.png?khzvbkjn";
             canvasM = document.createElement('canvas');
             mask = canvasM.getContext('2d');
-            
+            mask.setAttribute("willReadFrequently", true);
+            ct.setAttribute("willReadFrequently", true);
             /*img = document.getElementById('mask');
             canvas.width = img.width;
             canvas.height = img.height;*/
             imgM.onload = function() {
+                ct.fillRect(0, 0, canvas.width, canvas.height);
                 mask.drawImage(imgM, 0, 0, imgM.width,imgM.height,0,0,ct.canvas.width,ct.canvas.height);
                 //console.log(mask.getImageData(0,0,mask.canvas.width,mask.canvas.height));
                 ret = stackCanvas(ct, mask);
@@ -184,7 +186,7 @@
 
 
                 //ct.fillStyle = 
-                ct.fillRect(0, 0, canvas.width, canvas.height);
+                
                 console.log("   "+mask.width+"   "+mask.height+"   "+canvas.width+"   "+canvas.height);
 
                 
