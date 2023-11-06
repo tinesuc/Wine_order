@@ -1,713 +1,485 @@
-<!DOCTYPE html>
-<html lang="sl">
-<head>
-	<meta charset="UTF-8">
-	<title>Naročevanje Vina</title>
-	<link rel="stylesheet" href="main_css.css" type="text/css" media="all" >
-	<link rel="icon" type="image/x-icon" href="images/bottle_icon_temp.png">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script>
-        counter = 0;
-        time=0;
-        time2=0;
-        bool=true;
-        bool2=true;
-        manage_input_panel = (event) =>{
-            if(Date.now()-time2>100&&bool2){
-                bool2=false;
-                time2=Date.now();
-                
-                let table_div = document.querySelector(".info_item");
-                let cssWidth = 0;
-                let children = table_div.children;
-                for (let i = 0; i < children.length; i++) {
-                    cssWidth += parseInt(children[i].offsetWidth, 10);
-                }
-                let displayWidth = table_div.clientWidth;
-                
-                tab = document.querySelector('#table');
-                if (displayWidth < cssWidth*0.99&&!tab.classList.contains("folded_input")) {
-                    tab.classList.add("folded_input");
-                }else{
-                    tab = document.querySelector("#table");
-                    tab.classList.remove("folded_input");
-                    cssWidth = 0;
-                    let children = table_div.children;
-                    for (let i = 0; i < children.length; i++) {
-                        cssWidth += parseInt(children[i].offsetWidth, 10);
-                    }
-                    let displayWidth = table_div.clientWidth;
-                    if (displayWidth < cssWidth*0.99) {
-                        scaltab = document.querySelector('#table');
-                        tab.classList.add("folded_input");
-                    }
-                }
-                bool2=true;
-            }
-        }
-        manage_wine_items = (event, runs) =>{
-            
-            //-----wine list items count-----aspect ratio:6-10----item count 3-6/7---||---------------low frame aspect-ratio: wrap control_panel------flex-flow: column;---liheight*2-+-flex corection/2
-            if(Date.now()-time>100&&bool){
-                bool=false;
-                time=Date.now();
-                for(i=0;i<runs;i++){
-                    let con_pane = document.querySelector(".control_pane");
-                    let scrollWidth = con_pane.scrollWidth;
-                    let displayWidth = con_pane.clientWidth;
-                    let root = document.querySelector(":root");
-                    let scale =  parseInt(window.getComputedStyle(root).getPropertyValue('--num-of-items'));
-                    //console.log(root.style);    
+:root{
+	--in-pannel-width:48vw;
+	--bottle-pannel-width:18vw;
+	--theme-color-1:Indigo;
+	--scale:1.1;
+	--item-border:0.0625vw;
+	--num-of-items:4;
+    --default-num:3.5;
+    --ord_bg_color:white;
+    --ord_bg_color_light:white;
+}
+*{
+	margin:0;
+	padding:0;
+	box-sizing: border-box;
+	font-family: Ariel;
+    user-select:none;
+}
+.ordered{
+    --ord_bg_color:#68dc68;
+    --ord_bg_color_light:#8ef48e;
+}
+span.req{
+    color:red;
+}
+/*.folded_input .info_item > .input{
+    min-width:10ch !important;
+}*/
+span, label{
+    user-select:text;
+}
+body{
+	height:95vh;
+	background-image:url("images/bar-scene-background2-blur7.png");
+	background-size: 200vh;
+	background-position: 40% 0%;
+	/*background-image:url("bar-scene-background.jpg");
+	background-size: 200vh;
+	background-position: 25% 75%;*/
+}
 
-                    if (displayWidth < scrollWidth) {
-                        scale +=1;
-                        if(scale>7){
-                            scale /=2;
-                            sel = document.querySelector('#selector');
-                            sel.classList.add("folded_wine");
-                        }
-                        root.style.setProperty('--num-of-items', Math.min(scale,7));
-                        //console.log("cliped  "+(counter++)+"   "+Math.min(scale+1,7));
-                    }else{
-                        sel = document.querySelector("#selector");
-                        if(scale<=4&&sel.classList.contains("folded_wine")){
-                            scale *=2;
-                            sel.classList.remove("folded_wine");
-                        }
-                        scale -=1;
-                        root.style.setProperty('--num-of-items', Math.max(scale,1));
-                        scrollWidth = con_pane.scrollWidth;
-                        displayWidth = con_pane.clientWidth;
-                        root = document.querySelector(":root");
-                        scale =  parseInt(window.getComputedStyle(root).getPropertyValue('--num-of-items'));
-                        if (displayWidth < scrollWidth) {
-                            scale +=1;
-                            if(scale>7){
-                                scale /=2;
-                                sel = document.querySelector('#selector');
-                                sel.classList.add("folded_wine");
-                            }
-                            root.style.setProperty('--num-of-items', Math.min(scale,7));
-                        }
-                    }
-                }
-                
-                bool=true;
-            }
-            
-            
-            /*
-                wine_item
-                    d:block
-                wine_pane
-                    height:50%
-                control_pane
-                    max:width:100%
-                    height:50%s
-             */
-            
-        }
-        resize_handle = (event) => {
-            //----overflowing text-----
-            let container = document.querySelector(".text");
-            let padding_left = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-left'));
-            let padding_right = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-right'));
-            let text = document.querySelector("#selector");
-            if (container.clientWidth-padding_left-padding_right < text.clientWidth) {
-                text.classList.add("animate");
-            }else{
-                text.classList.remove("animate");
-            }
-            //-------------
-            manage_input_panel(event);
-            manage_wine_items(event, 1);
-		};
-        function stackCanvas(c1, c2) {
-            
-            d1 = c1.getImageData(0, 0, c1.canvas.width, c1.canvas.height).data;
-            d2 = c2.getImageData(0, 0, c2.canvas.width, c2.canvas.height).data;
-            if(d1.length!=d2.length){
-                console.log((counter++)+"   not same size");
-            }
-            canva = document.createElement('canvas');
-            cO = canva.getContext("2d");
-            cO.fillRect(0, 0, c1.canvas.width, c1.canvas.height);
-            dO = cO.getImageData(0,0,c1.canvas.width, c1.canvas.height);
-            for(i=3;i<d1.length;i+=4){
-                a1 = d1[i];
-                a2 = d2[i];
-                r1 = d1[i-1];
-                r2 = d2[i-1];
-                g1 = d1[i-2];
-                g2 = d2[i-2];
-                b1 = d1[i-3];
-                b2 = d2[i-3];
-                
-                a = a2;
-                r = ((255 - a2)*r1 + a2*r2)/255;
-                g = ((255 - a2)*g1 + a2*g2)/255;
-                b = ((255 - a2)*b1 + a2*b2)/255;
-                
-                dO[i] = a;
-                dO[i-1] = r;
-                dO[i-2] = g;
-                dO[i-3] = b;
-            }
-            console.log(dO);
-            cO.putImageData(dO,0,0);
-            return cO;
-        }
+
+#main_panel{
+	margin-left:calc(50% - var(--in-pannel-width)/2);
+	width: calc(var(--bottle-pannel-width) + var(--in-pannel-width));
+	height: 90vh;
+	margin-top: 5vh;
+}
+#input_panel{
+	background-color:white;
+	width: var(--in-pannel-width);
+	height:100%;
+	display:inline-block;
+	border:0.3125vw solid var(--theme-color-1);
+	float:left;
+	border-radius:0.5625vw;
+}
+
+
+#title{
+	width:100%;
+	height:min(9vh, 5.5vw);
+	border-bottom:0.125vw dotted var(--theme-color-1);
+}
+h1{
+	width:70%;
+	text-align-last: center;
+	line-height:min(9vh, 5.5vw);
+	font-size:min(7vh, 4.5vw);
+	margin:auto;
+	white-space: nowrap;
+}
+table{
+	width:100%;
+	border-collapse: collapse;
+}
+#table{
+	--table-scale:var(--scale);
+    padding:1vw;
+	width:100%;
+	height:45%;
+	overflow-y: auto;
+    
+}
+input, textarea, select{
+	border:0.0625vw solid grey;
+	border-radius:0;
+	font-size:2.5vh;
+    vertical-align: middle;
+}
+input:focus-visible{
+	outline:0.0625vw solid grey;
+	border-radius:0;
+}
+br{
+	user-select:none;
+}
+h3{
+	margin-bottom:-0.3125vw;
+	margin-top:1.5625vw;
+	line-height:0;
+}
+label{
+	line-height:4vh;
+	font-size:2.5vh;
+    vertical-align: top;
+}
+ul{
+	list-style-type:none;
+}
+/*#table li{
+    line-height:4.5vh;
+}*/
+td span{
+	font-size:2.5vh;
+}
+#table li > div > .label{
+    flex:1;
+    display:inline-block;
+    width:30%;
+    min-width:12.1ch;
+}
+#table li > div > .label > label{
+    min-width:100%;
+}
+#table li > div > .input{
+    display:inline-block;
+    width:60%;
+    min-width:22ch;
+}
+#table li > div > .input > input{
+    min-width:100%;
+}
+
+/****************INPUTS***********/
+#name,#name2,#addr,#postal,#emailid,#phoneid{
+	width:100%;
+    /*line-height:4vh;*/
+	display:flex;
+}
+#ime,#priimek,#posta,#naslov,#email,#phone{
+	width:100%;
+	float:right;
+	/*line-height:1vh;*/
+	/*margin:auto;*/
+}
+#phone{
+    font-size:2.5vh;
+}
+#phone_n1, #phone_n2{
+	width:3.3ch;
+	margin-right:0;
+}
+#phone_n3{
+	width:4.4ch;
+}
+#submit{
+    display:none;
+}
+#submit_swal{
+	border-radius:0.25vw;
+	margin-top:0.625vw;
+    float:right;
+    position:relative;
+    right:1vw;
+    height: 4vh;
+    width: 8vh;
+    font-size: 2vh;
+}
+/****************************************/
+form{
+	height:calc(100% - min(9vh, 5.5vw));
+}
+
+#selector{
+	margin:1vw;
+	border:0.25vw solid gray;
+	height:calc(55% - 2*1vw);
+}
+#selector ul{
+	margin:1vw 0vw 1vw 1vw;
+	list-style-type:none;
+	height:calc(100% - 2vw);
+	overflow-y: scroll;
+}
+@media (hover: none) {
+	#selector ul{
+		padding-right:1vw;
+	}
+}
+#selector li{
+	margin:1vw 0vw;
+	height:calc(100%/var(--num-of-items) - 1vw + 1vw/var(--num-of-items));
+	border:0.0625vw solid;
+	overflow: none;
+}
+#selector li:first-child{
+	margin:0vw 0vw 1vw 0vw;
+}
+#selector li:last-child{
+	margin:1vw 0vw 0vw 0vw;
+}
+
+/***********wine stuff*************/
+
+
+.wine_item{
+	height:100%;
+	max-width:100%;
+	display:flex;
+	background-color: var(--ord_bg_color);
+
+}
+.wine_pane{
+	flex:1;
+	/*float:right;*/
+    margin:auto;
+    display:flex;
+    justify-content: left;
+    align-items: center;
+    position: relative;
+    top: 0;
+    overflow: hidden;
+    height:100%;
+}
+.wine_pane > .image{
+	display:inline-block;
+    height: 100%;
+}
+.wine_pane > .image > img{
+	max-height:100%;
+	min-height:100%;
+}
+.text, .control_pane{
+	display:inline-block;
+	height:100%;
+}
+.text{
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	position:relative;
+	top:0;
+	flex: 1;
+    padding-left: 1vw;
+    padding-right: 1vw;
+	overflow:clip;
+    basckground:rgb(255 255 255 / 0%);
+}
+.text .fade-left{
+    width:1vw;
+    height:100%;    
+    position:absolute;
+    left:0;
+    top:0;
+    background: linear-gradient(90deg, var(--ord_bg_color) 0px, rgb(255 255 255 / 0%) 100%);
+}
+.text .fade-right{
+    width:1vw;
+    height:100%;    
+    position:absolute;
+    right:0;
+    top:0;
+    background: linear-gradient(270deg, var(--ord_bg_color) 0px, rgb(255 255 255 / 0%) 100%);
+}
+.text > span {
+	font-size:calc(3.2vh / var(--num-of-items) * var(--default-num));
+	display: table-cell;
+	vertical-align: middle;
+    position:relative;
+}
+.animate .wine_item:hover  .text > span{
+	animation: leftright 2s infinite alternate ease-in-out;
+    
+}
+.control_pane{
+	min-width:40%;
+	max-width:40%;
+	/*float:right;*/
+    display:flex;
+    justify-content: left;
+    align-items: center;
+    position: relative;
+    top: 0;
+    overflow: hidden;
+}
+@keyframes leftright {
+  0%,
+  10% {
+    transform: translateX(0%);
+    left: 0%;
+  }
+  80%,
+  100% {
+    transform: translateX(-100%);
+    left: 100%;
+  }
+}
+
+.control_pane > .price{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:0.5vw;
+    margin-right:0.5vw;
+}
+.control_pane > .price > span{
+    font-size:calc(2.5vh / var(--num-of-items) * var(--default-num));
+	display: table-cell;
+	vertical-align: middle;
+    position:relative;
+}
+.control_pane > .input{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex:1;
+}
+.control_pane > .input > input{
+    font-size:calc(3.5vh / var(--num-of-items) * var(--default-num));
+    vertical-align: middle;
+    min-width:3.3ch;
+    width:100%;
+    background-color: var(--ord_bg_color_light);
+}
+.control_pane > .input > input::selection {
+    background: rgba(0,0,0,0);
+}
+:invalid:not(form, [value=""]){
+    background-color:rgb(240,40,10);
+}
+.control_pane > .image{
+    height:100%;
+    aspect-ratio:1/1;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.control_pane > .image > img{
+    height:40%;
+    cursor: pointer;
+}
+.folded_wine .wine_item{
+    display:block;
+}
+.folded_wine .wine_pane{
+    height:50%;
+}
+.folded_wine .control_pane{
+    height:50%;
+    max-width:100%;
+}
+.folded_input .info_item{
+    display:block !important;
+}
+.folded_input .info_item > div{
+    width:100% !important;
+}
+.folded_input .info_item > .label{
+    text-align:center !important;
+}
+@media (max-aspect-ratio: 0.8) {
+    .info_item{
+        display:block !important;
+    }
+    .info_item > div{
+        width:100% !important;
+    }
+    .info_item > .label{
+        text-align:center !important;
+    }
+}
+/* 
+TODO:
+fix background image repeating at large aspect ratio
+make min aspect 1/1 for center other wise shift left for larger bottle --> flex box for name/input
++wrap input fields
+
+
+animatins. https://codepen.io/pawankolhe/pen/abvMjGB
+*/
+
+#s_info li{
+    display:flex;
+}
+.s_label{
+    display:inline-block;
+    width:40%;
+    text-align:left;
+}
+.s_input{
+    flex:1;
+    text-align:right;
+}
+
+
+
+
+
+
+#bottle_panel{
+	background-color:blue;
+	width: var(--bottle-pannel-width);
+	height:100%;
+	display:inline-block;
+	/*
+		bottle max height = main panel height
+		bottle max width  = 0.5 main panel width
+	*/
+    aspect-ratio:1/4;
+    container-type:size;
+    container-name: bottle_panel;
+    position: relative;
+    margin: 0px;
+}
+
+@container bottle_panel (width > 0px){
+}
+
+
+@container bottle (width > 0px){
+    #canvas, #mask, #bottle{
         
-        draw_bottle = () =>{
-            canvas = document.querySelector("#canvas");
-            ct = canvas.getContext("2d");
-            /*
-            imgM = new Image(15,60);
-            imgM.src = "images/side_bottle_mask.png?khzvbkjn";
-            canvasM = document.createElement('canvas');
-            mask = canvasM.getContext('2d');
-            
-            /*img = document.getElementById('mask');
-            canvas.width = img.width;
-            canvas.height = img.height;*/
-            /*imgM.onload = function() {
-                mask.drawImage(imgM, 0, 0, imgM.width,imgM.height,0,0,ct.canvas.width,ct.canvas.height);
-                //console.log(mask.getImageData(0,0,mask.canvas.width,mask.canvas.height));
-                ret = stackCanvas(ct, mask);
-                ct.putImageData(ret.getImageData(0,0,ret.canvas.width,ret.canvas.height),0,0);
-
-
-                //ct.fillStyle = 
-                ct.fillRect(0, 0, canvas.width, canvas.height);
-                console.log("   "+mask.width+"   "+mask.height+"   "+canvas.width+"   "+canvas.height);
-
-                
-            };
-            */
-            
-            
-            
-            ct.fillRect(0, 0, canvas.width, canvas.height);
-
-        }
+        image-rendering: pixelated;
+    }
+    
+    #bottle_cont{
+        aspect-ratio:1/4;
+        height: 100cqh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        
+        -webkit-mask-image: url(images/side_bottle_mask.png);
+        mask-image: url(images/side_bottle_mask.png);
+        mask-mode: alpha;
+        -webkit-mask-mode: alpha;
+        
+        -webkit-mask-repeat:no-repeat;
+        mask-repeat:no-repeat;
         
         
-        onloadm = () => {
-            //time=Date.now();
-            //console.log(time+"   tz");
-            manage_input_panel(null);
-            manage_wine_items(null, 7);
-            resize_handle(null);
-            draw_bottle();
-            
-        };
-        addEventListener("resize", resize_handle);
-        
-        
-        input_full = (event, ell) => {
-            if(ell.value.length === parseInt(ell.attributes['maxlength'].value)){
-                ell.nextElementSibling.focus();
-            }
-        }
-        input_empty = (event, ell) => {
-            if(event.key === 'Backspace' && ell.value.length === 0) {
-                ell.previousElementSibling.focus();
-            }
-        }
-        filter_keys = (event, keys, ell) =>{
-            text = ell.value;
-            tout = "";
-            for(char of text){
-                if(keys.includes(char)){
-                    tout += char
-                }
-                
-            }
-            ell.value="";
-            ell.value = tout;
-        }
-        clamp = (num, min, max, step) =>{
-            if(num=="NaN"){num="0";return;}
-            num = Math.max(0,num-min);
-            num = Math.min(max,num%step);
-            num = num + min;
-            return num;
-        }
-        filter_num_code = (event, ell) =>{
-            filter_keys(event, ["0","1","2","3","4","5","6","7","8","9"], ell)
-        }
-        filter_num_clamp = (ell, min, max, step) =>{
-            num = Number(ell.value);
-            ell.value=clamp(num, min, max, step);
-        }
-        reset_sel = (event, ell) =>{
-            inp = ell.parentElement.parentElement.querySelector(".input > input");
-            inp.value="0";
-            parent = ell.closest('.wine_item');
-            parent.classList.remove("ordered");
-            //remove class for background color
-        }
-        num_input = (event, ell) => {
-            num = parseInt(ell.value);
-            if(num =="NaN"){num=0;}
-            parent = ell.closest('.wine_item');
-            parent.classList.add("ordered");
-            if(num ==0 || ell.value==""){
-                parent.classList.remove("ordered");
-            }
-            ell.value=num;
-        }
-		set_zero = (event, ell) => {
-            if(ell.value==""){
-                ell.value=0;
-            }
-        }
-        cut_to_2 = (num) =>{
-            
-        }
-        
-        form_submit = (event, ell) => {
-            info_in = document.querySelectorAll("#table li > div");
-            invalids = [];
-            for(i=0;i<5;i++){
-                inn = info_in[i];
-                input = inn.querySelector(".input > input");
-                id = input.id;
-                value = input.value;
-                if(value==""&&id!="email" || id=="email"&&!input.checkValidity()){
-                    invalids.push(id);
-                    continue;
-                }
-                if(id=="email"){value="<span style='color:rgb(230,230,230);'>---</span>"}
-                dest = document.querySelector("#s_"+id+" > .s_input");
-                dest.innerHTML=value;
-                console.log((counter++)+"  "+id+"   "+value);
-                console.log(invalids);
-            }
-            phn1 = document.querySelector("#phone_n1").value;
-            phn2 = document.querySelector("#phone_n2").value;
-            phn3 = document.querySelector("#phone_n3").value;
-            dest = document.querySelector("#s_phone > .s_input");
-            if(!(phn1.length==3&&phn2.length==3&&phn3.length==4)){
-                if(!(phn1.length==0&&phn2.length==0&&phn3.length==0)){
-                    invalids.push("telefonska stevilka");
-                }else{
-                    dest.innerHTML="<span style='color:rgb(230,230,230);'>---</span>"
-                }
-            }else{
-                dest.innerHTML=phn1+"-"+phn2+"-"+phn3;
-            }
-            
-            
-            if(invalids.length!=0){
-                msg = "";
-                for(i=0;i<invalids.length ;i++){
-                    if(i!=invalids.length-1){
-                        msg+= "<span style='color:red;'>"+invalids[i]+"</span>, "
-                    }else{
-                        msg+= "<span style='color:red;'>"+invalids[i]+"</span>"
-                    }
-                }
-                Swal.fire({
-                    title: '<strong>Napečni vnosi</strong>',
-                    icon: 'error',
-                    html:"Prosim pravilno vnesite naslednje podatke: "+msg+".",
-                    showCloseButton: true,
-                })
-                
-                return;
-            }
-            
-            
-            
-            orr_wines = document.querySelectorAll("#selector .wine_item");
-            ordered = [];
-            taxMap=new Map();
-            totalCost=0;
-            totalTax=0;
-            baseMap=new Map();
-            for(i=0;i<orr_wines.length ;i++){
-                name =  orr_wines[i].querySelector(".text > span").innerHTML;
-                price = orr_wines[i].querySelector(".price > span").innerHTML;
-                price = Number(price.substring(0, price.length-1));
-                amount = parseInt(orr_wines[i].querySelector(".input > input").value);
-                tax = 0.22;
-                console.log((counter++)+"   "+name+"  "+price+"  "+amount);
-                
-                
-                
-                if(amount!=0){
-                    ordered.push({
-                        name:name,
-                        price:price,
-                        amount:amount,
-                        tax:tax,
-                        cost:(price*amount)
-                    });
-                    prevTax = Number(taxMap.get(tax));
-                    if(isNaN(prevTax)){prevTax=0;}
-                    taxMap.set(tax,(prevTax+tax*price*amount))
-                    
-                    prevBase = Number(baseMap.get(tax));
-                    if(isNaN(prevBase)){prevBase=0;}
-                    baseMap.set(tax,(prevBase+(1-tax)*price*amount))
-                    
-                    totalCost+=price*amount;
-                    totalTax+=tax*price*amount;
-                }
-                
-                
-            }
-            
-            
-            if(ordered.length==0){
-                Swal.fire({
-                    title: '<strong>Ni naročila</strong>',
-                    icon: 'error',
-                    html:"Prosimo da izberete vina za nakup.",
-                    showCloseButton: true,
-                })
-                return;
-            }
-            
-            rec_body = document.querySelector("#s_wi_tb");
-            text="";
-            for(i=0;i<ordered.length;i++){
-                item=ordered[i];
-                text+="<tr style='width:100%;'>" +
-                    "   <td class='s_name' colspan='2' style='text-align:left;'>"+item.name+"</td>"+
-                    "   <td class='s_amount' style='width:33%; text-align:right;'>kos "+item.amount+"</td>"+
-                    "</tr>"+
-                    "<tr style='width:100%;'>"+
-                    "   <td class='s_tax' style='width:33%; text-align:right;'>"+(item.tax*100).toFixed(2)+"%</td>"+
-                    "   <td class='s_price' style='width:33%; text-align:right;'>"+item.price+"</td>"+
-                    "   <td class='s_cost' style='width:33%; text-align:right;'>"+item.cost.toFixed(2)+"</td>"+
-                    "</tr>";
-            }
-            rec_body.innerHTML=text;
-            rec_total = document.querySelector("#s_total");
-            rec_total.innerHTML=totalCost.toFixed(2);
-            //**************************************************************
-            
-            rec_tax = document.querySelector("#s_wi_tx");
-            text="";
-            mapTaxK = Array.from(taxMap.keys());
-            mapBaseV = Array.from(baseMap.values());
-            mapTaxV = Array.from(taxMap.values());
-            
-            
-            for(i=0;i < mapTaxK.length;i++){
-                text+="<tr>"+
-                        "<td style='text-align:left;'>DDV</td>"+
-                        "<td style='text-align:right;'>"+((mapTaxK[i]*100).toFixed(2))+"%</td>"+
-                        "<td style='text-align:right;'>"+(mapBaseV[i].toFixed(2))+"</td>"+
-                        "<td style='text-align:right;'>"+(mapTaxV[i].toFixed(2))+"</td>"+
-                    "</tr>";
-            }
-            rec_tax.innerHTML=text;
-            rec_tax_total = document.querySelector("#s_tax_total");
-            rec_tax_total.innerHTML=totalTax.toFixed(2);
-            
-            
-            templ = document.querySelector("#swal_templ").innerHTML;
-            Swal.fire({
-                title: '<strong>Izpisek vnesenih podatkov</strong>',
-                icon: 'info',
-                html:templ,
-                showCloseButton: true,
-                showCancelButton: true,
-                focusConfirm: false,
-                confirmButtonText:'Potrdi nakup',
-                cancelButtonText:'Prekliči',
-                didOpen: () => Swal.getConfirmButton().focus()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title:'Potrjeno',
-                        html:'Vaš nakup je bil potrjen.',
-                        icon:'success',
-                        timer: 3000,
-                        timerProgressBar: true,
-                    })
-                }
-            })
-            
-            
-            
-        }
-	</script>
-</head>
-<body onLoad="onloadm()">
-	<div id="main_panel">
-		<div id="input_panel">
-			<div id="title">
-				<h1>
-					Naročanje Vina
-				</h1>
-			</div>
-			<form enctype="application/x-www-form-urlencoded" method="POST" onkeydown="return event.key != 'Enter';">
-				<div id="table">
-					<ul>
-						<li>
-                            <div id="name" class="info_item">
-                                <div class="label">
-                                    <label for="ime">Ime:<span class="req">*</span></label>
-                                </div>
-                                <div class="input">
-                                    <input value="" name="ime" id="ime" placeholder="Ime" required>
-                                </div>
-                            </div>
-						</li>
-						<li>
-                            <div id="name2" class="info_item">
-                                <div class="label">
-                                    <label for="priimek">Priimek:<span class="req">*</span></label>
-                                </div>
-                                <div class="input">
-                                    <input value="" name="priimek" id="priimek" placeholder="Priimek"  required>
-                                </div>
-                            </div>
-						</li>
-						<li>
-                            <div id="addr" class="info_item">
-                                <div class="label">
-                                    <label for="naslov">Naslov:<span class="req">*</span></label>
-                                </div>
-                                <div class="input">
-                                    <input value="" name="naslov" id="naslov" placeholder="Naslov"  required>
-                                </div>
-                            </div>
-						</li>
-						<li>
-                            <div id="postal" class="info_item">
-                                <div class="label">
-                                    <label for="posta">Pošta:<span class="req">*</span></label>
-                                </div>
-                                <div class="input">
-                                    <input value="" name="posta" id="posta" placeholder="Pošta" required>
-                                </div>
-                            </div>
-						</li>
-						<li>
-                            <div id="emailid" class="info_item">
-                                <div class="label">
-                                    <label for="email">Email:</label>
-                                </div>
-                                <div class="input">
-                                    <input value="" type="email" name="email" id="email" placeholder="E-mail" pattern=".*@([a-zA-Z0-9]*\.){1,}[a-zA-Z0-9]{2,}">
-                                </div>
-                            </div>
-						</li>
-						<li>
-                            <div id="phoneid" class="info_item">
-                                <div class="label">
-                                    <label for="phone_n1">Telefonska:</label>
-                                </div>
-                                <div class="input">
-                                    <div id="phone">
-                                        <input maxlength="3" name="phone_n1" id="phone_n1" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this);" placeholder="###">&nbsp;-
-                                        <input maxlength="3" name="phone_n2" id="phone_n2" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this); input_empty(event, this);" placeholder="###">&nbsp;-
-                                        <input maxlength="4" name="phone_n3" id="phone_n3" pattern="[0-9]{4}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_empty(event, this)" placeholder="####">
-                                    </div>
-                                </div>
-                            </div>
-						</li>
-						<li>
-                            <button type="button" id="submit_swal" onclick="form_submit(event, this);">Zaključi</button>
-                            <input type="submit" id="submit" value="Finish Order"><br>
-                            
-						</li>
-					</ul>
-				</div>
-				
-				<div id="selector">
-					<ul>
-						<li>
-							<div class="wine_item">
-                                <div class="wine_pane">
-                                    <div class="image">
-                                        <img src="images/mini_bottle_templ.png" alt="Image of bottle">
-                                    </div>
-                                    <div class="text">
-                                        <span>wurcktzzjkrzzkrkdkdrzk</span>
-                                        <div class="fade-left"></div>
-                                        <div class="fade-right"></div>
-                                    </div>
-								</div>
-								<div class="control_pane">
-                                    <div class="price">
-                                        <span>150.99€</span>
-                                    </div>
-                                    <div class="input">
-                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
-                                    </div>
-                                    <div class="image">
-                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
-                                    </div>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="wine_item">
-                                <div class="wine_pane">
-                                    <div class="image">
-                                        <img src="images/mini_bottle_templ.png" alt="Image of bottle">
-                                    </div>
-                                    <div class="text">
-                                        <span>wurcktzzjkrzzkrkdkdrzk</span>
-                                        <div class="fade-left"></div>
-                                        <div class="fade-right"></div>
-                                    </div>
-								</div>
-								<div class="control_pane">
-                                    <div class="price">
-                                        <span>150.99€</span>
-                                    </div>
-                                    <div class="input">
-                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
-                                    </div>
-                                    <div class="image">
-                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
-                                    </div>
-								</div>
-							</div>
-						</li>
+    }
+    
+    #canvas{
+        aspect-ratio:1/4;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    #mask{
+        position: absolute;
+        z-index: 9;
+        /*mix-blend-mode: multiply;*/
+    }
+    #bottle{
+        position: absolute;
+        z-index: 11;
+        mix-blend-mode: normal;
+        container-name: bottle;
+    }
+    
+    #actual_bottle{
+        transform: scale(0.5) translate(6px, 27px);
+    }
+    
+}
 
-					</ul>
-				</div>
-			</form>
-		</div>
-		<div id="bottle_panel">
-            <div id="actual_bottle">
-                <div id="bottle_cont">
-                    <!-- 5-neck 15-bottle 60-high -->
-                    <canvas id="canvas"></canvas>
-                </div>
-                <!--<img id="mask" src="images/side_bottle_mask.png" alt="image of a bottle">-->
-                <img id="bottle" src="images/side_bottle.png" alt="image of a bottle">
-            </div>
-		</div>
-	</div>
 
-    <div style="display:none;" id="swal_templ">
-        <div id="s_">
-            <div id="s_info">
-                <ul>
-                    <li id="s_ime">
-                        <div class="s_label">
-                            Ime:
-                        </div>
-                        <div class="s_input">
-                        </div>
-                    </li>
-                    <li id="s_priimek">
-                        <div class="s_label">
-                            Priimek:
-                        </div>
-                        <div class="s_input">
-                        </div>
-                    </li>
-                    <li id="s_naslov">
-                        <div class="s_label">
-                            Naslov:
-                        </div>
-                        <div class="s_input">
-                        </div>
-                    </li>
-                    <li id="s_posta">
-                        <div class="s_label">
-                            Pošta:
-                        </div>
-                        <div class="s_input">
-                        </div>
-                    </li>
-                    <li id="s_email">
-                        <div class="s_label">
-                            Email:
-                        </div>
-                        <div class="s_input">
-                        </div>
-                    </li>
-                    <li id="s_phone">
-                        <div class="s_label">
-                            Telefonska:
-                        </div>
-                        <div class="s_input">
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <br>
-            <hr style="margin: 1ex 0;">
-            <table id="s_wines" style="width:100%;">
-                <thead id="s_wi_th">
-                    <tr style="width:100%;">
-                        <td class="s_name" colspan="2" style="text-align:left;">Naziv</td>
-                        <td class="s_amount" style="width:33%; text-align:right;">Količina</td>
-                    </tr>
-                    <tr style="width:100%;">
-                        <td class="s_tax" style="width:33%; text-align:right;">St.DDV</td>
-                        <td class="s_price" style="width:33%; text-align:right;">Cena</td>
-                        <td class="s_cost" style="width:33%; text-align:right;">Znesek</td>
-                    </tr>
-                    <tr style="width:100%;">
-                        <td colspan="3">&nbsp;</td>
-                    </tr>
-                </thead>
-                <tbody id="s_wi_tb">
-                    
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">
-                            <hr style="margin: 1ex 0;">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align:left;">
-                            <strong>ZA PLAČILO EUR</strong>
-                        </td>
-                        <td style="width:33%; text-align:right;">
-                            <strong id="s_total"></strong>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-            <br>
-            <table style="width:100%;">
-                <thead>
-                    <tr>
-                        <td style="text-align:left;">Davek</td>
-                        <td style="text-align:right;">St.DDV</td>
-                        <td style="text-align:right;">Osnova</td>
-                        <td style="text-align:right;">Zn.DDV</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <hr style="margin: 1ex 0;">
-                        </td>
-                    </tr>
-                </thead>
-                <tbody id="s_wi_tx">
-                    
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4">
-                            &nbsp;
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:left;" colspan="3">
-                            SKUPAJ DAVEK EUR:
-                        </td>
-                        <td id="s_tax_total" style="text-align:right;">
-                            
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
