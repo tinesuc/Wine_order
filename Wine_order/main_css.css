@@ -55,32 +55,6 @@ body{
 	float:left;
 	border-radius:0.5625vw;
 }
-#bottle_panel{
-	background-color:blue;
-	width: var(--bottle-pannel-width);
-	height:100%;
-	display:inline-block;
-	/*
-		bottle max height = main panel height
-		bottle max width  = 0.5 main panel width
-	*/
-}
-#bottle_panel > img{
-    height:100%;
-    image-rendering: pixelated;
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #title{
@@ -418,4 +392,90 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
     flex:1;
     text-align:right;
 }
+
+
+
+
+
+
+#bottle_panel{
+	background-color:blue;
+	width: var(--bottle-pannel-width);
+	height:100%;
+	display:inline-block;
+	/*
+		bottle max height = main panel height
+		bottle max width  = 0.5 main panel width
+	*/
+    aspect-ratio:1/4;
+    container-type:size;
+    container-name: bottle_panel;
+    position: relative;
+    margin: 0px;
+}
+
+@container bottle_panel (width > 0px){
+    #canvas, #mask, #bottle{
+        height:100%;
+        image-rendering: pixelated;
+    }
+    #canvas{
+        aspect-ratio:1/4;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        /*
+        -webkit-mask-image: url(images/side_bottle_mask2.svg);
+        mask-image: url(images/side_bottle_mask2.svg);
+        mask-mode: alpha;
+        -webkit-mask-mode: alpha;*/
+    }
+    #bottle_cont{
+        aspect-ratio:1/4;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        
+        -webkit-mask-image: url(images/side_bottle_mask.png);
+        mask-image: url(images/side_bottle_mask.png);
+        mask-mode: alpha;
+        -webkit-mask-mode: alpha;
+    }
+    #mask{
+        position: absolute;
+        z-index: 9;
+        /*mix-blend-mode: multiply;*/
+    }
+    #bottle{
+        position: absolute;
+        z-index: 11;
+        mix-blend-mode: normal;
+    }
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
