@@ -417,6 +417,9 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 @container bottle_panel (width > 0px){
 }
 
+#bottle{
+    container-name: bottle;
+}
 
 @container bottle (width > 0px){
     #canvas, #mask, #bottle{
@@ -458,7 +461,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
         position: absolute;
         z-index: 11;
         mix-blend-mode: normal;
-        container-name: bottle;
+        
     }
     
     #actual_bottle{
