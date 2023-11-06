@@ -16,6 +16,9 @@
 	font-family: Ariel;
     user-select:none;
 }
+html{
+    overflow: hidden;
+}
 .ordered{
     --ord_bg_color:#68dc68;
     --ord_bg_color_light:#8ef48e;
@@ -399,76 +402,86 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 
 
 #bottle_panel{
+    --sc-fac:0.2;
 	background-color:blue;
-	width: var(--bottle-pannel-width);
-	height:100%;
+	/*width: var(--bottle-pannel-width);
+	*/
+    height:400vh;
+    
 	display:inline-block;
 	/*
 		bottle max height = main panel height
 		bottle max width  = 0.5 main panel width
 	*/
+    
+    transform: scale(var(--sc-fac)) translate(calc(-30vw / var(--sc-fac)), calc(0vh / var(--sc-fac)));
+    
+    -webkit-transform-origin-x: left;
+    transform-origin-x: left;
+    transform-origin: top;
     aspect-ratio:1/4;
-    container-type:size;
     container-name: bottle_panel;
-    position: relative;
+    position: absolute;
     margin: 0px;
 }
 
 @container bottle_panel (width > 0px){
 }
 
+
+
 #bottle{
     container-name: bottle;
 }
 
-@container bottle (width > 0px){
-    #canvas, #mask, #bottle{
-        
-        image-rendering: pixelated;
-    }
-    
-    #bottle_cont{
-        aspect-ratio:1/4;
-        height: 100cqh;
-        position: absolute;
-        top: 0;
-        left: 0;
-        
-        -webkit-mask-image: url(images/side_bottle_mask.png);
-        mask-image: url(images/side_bottle_mask.png);
-        mask-mode: alpha;
-        -webkit-mask-mode: alpha;
-        
-        -webkit-mask-repeat:no-repeat;
-        mask-repeat:no-repeat;
-        
-        
-    }
-    
-    #canvas{
-        aspect-ratio:1/4;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-    #mask{
-        position: absolute;
-        z-index: 9;
-        /*mix-blend-mode: multiply;*/
-    }
-    #bottle{
-        position: absolute;
-        z-index: 11;
-        mix-blend-mode: normal;
-        
-    }
-    
-    #actual_bottle{
-        transform: scale(0.5) translate(6px, 27px);
-    }
-    
+#canvas, #mask, #bottle{
+
+    image-rendering: pixelated;
 }
+
+#bottle_cont{
+    aspect-ratio:1/4;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    /*-webkit-mask-image: url(images/side_bottle_mask.png);*/
+    mask-image: url(images/side_bottle_mask.png);
+    mask-mode: alpha;
+    -webkit-mask-mode: alpha;
+
+    -webkit-mask-repeat:no-repeat;
+    mask-repeat:no-repeat;
+
+
+}
+
+#canvas{
+    aspect-ratio:1/4;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#mask{
+    position: absolute;
+    z-index: 9;
+    /*mix-blend-mode: multiply;*/
+}
+#bottle{
+    position: absolute;
+    z-index: 11;
+    mix-blend-mode: normal;
+    height:400vh
+}
+
+#actual_bottle{
+    /*transform: scale(0.5) translate(6px, 27px);*/
+    height:100%;
+}
+    
+
 
 
 
