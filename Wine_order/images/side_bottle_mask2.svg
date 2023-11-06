@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="15" height="60" viewBox="0 0 15 60" xml:space="preserve">
+<desc>Created with Fabric.js 5.3.0</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 7.8703703704 30.3703703704)" id="RIWyw1sbhw31KLuDNSLSr"  >
+<g id="RIWyw1sbhw31KLuDNSLSr_clip" clip-path="url(#CLIPPATH_4)"  >
+<image id="SVGID_0" x="0" y="0" width="15" height="60" transform="matrix(1 0 0 1 -7.5 -30)" opacity="1" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAA8CAYAAAC5OOBJAAAAAXNSR0IArs4c6QAAAIdJREFUSEvtl0EOgDAIBOX/j8a0SRukqwV70Oh6VKZuJhBUtoVLEKuq6u+LyFAL4QLaAxBYaggbxRQ2dtfXmmRpqm7DCGyN50fzMJJXIDrgBXAkso/eYz8DZ95qo9fYhGObr/Q5hcVc1SoKS8iiMPC5OPPHDpsZcs8p7GfCsgu+7bjT/6qIvx2Qrug9mLBAegAAAABJRU5ErkJggg=="></image></g>
+<clipPath id="CLIPPATH_4" >
+	<path transform=" translate(-7.5, -30)" id="RIWyw1sbhw31KLuDNSLSr" d="M 0 0 L 15 0 L 15 60 L 0 60 Z" stroke-linecap="round" />
+</clipPath>
+<path style="stroke: rgb(14,156,91); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: none;fill-rule: nonzero; opacity: 1;"  transform=" translate(-7.5, -30)" d="M 0 0 L 15 0 L 15 60 L 0 60 Z" stroke-linecap="round" />
+</g>
+</svg>
