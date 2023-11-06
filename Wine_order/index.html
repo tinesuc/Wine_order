@@ -12,6 +12,7 @@
         time2=0;
         bool=true;
         bool2=true;
+        zoom=1;
         manage_input_panel = (event) =>{
             if(Date.now()-time2>100&&bool2){
                 bool2=false;
@@ -108,6 +109,11 @@
             
         }
         resize_handle = (event) => {
+            zoom = window.devicePixelRatio * 0.8;
+            
+            let root = document.querySelector(":root");
+            root.style.setProperty('--zoom', zoom);
+            
             //----overflowing text-----
             let container = document.querySelector(".text");
             let padding_left = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-left'));
@@ -161,7 +167,7 @@
         draw_bottle = () =>{
             canvas = document.querySelector("#canvas");
             ct = canvas.getContext("2d");
-            /*
+            
             imgM = new Image(15,60);
             imgM.src = "images/side_bottle_mask.png?khzvbkjn";
             canvasM = document.createElement('canvas');
@@ -170,7 +176,7 @@
             /*img = document.getElementById('mask');
             canvas.width = img.width;
             canvas.height = img.height;*/
-            /*imgM.onload = function() {
+            imgM.onload = function() {
                 mask.drawImage(imgM, 0, 0, imgM.width,imgM.height,0,0,ct.canvas.width,ct.canvas.height);
                 //console.log(mask.getImageData(0,0,mask.canvas.width,mask.canvas.height));
                 ret = stackCanvas(ct, mask);
@@ -183,7 +189,7 @@
 
                 
             };
-            */
+            
             
             
             
@@ -583,7 +589,7 @@
                 <!-- 5-neck 15-bottle 60-high -->
                 <canvas id="canvas"></canvas>
             </div>
-            <!--<img id="mask" src="images/side_bottle_mask.png" alt="image of a bottle">-->
+            <img style="display:none;" id="mask" src="images/side_bottle_mask.png" alt="image of a bottle">
             <img id="bottle" src="images/side_bottle.png" alt="image of a bottle">
 		</div>
 	</div>
