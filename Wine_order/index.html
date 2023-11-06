@@ -167,14 +167,12 @@
         draw_bottle = () =>{
             canvas = document.querySelector("#canvas");
             ct = canvas.getContext("2d");
-            
+            /*
             imgM = new Image(15,60);
             imgM.src = "images/side_bottle_mask.png?khzvbkjn";
             canvasM = document.createElement('canvas');
             mask = canvasM.getContext('2d');
-            /*img = document.getElementById('mask');
-            canvas.width = img.width;
-            canvas.height = img.height;*/
+            
             imgM.onload = function() {
                 ct.fillRect(0, 0, canvas.width, canvas.height);
                 mask.drawImage(imgM, 0, 0, imgM.width,imgM.height,0,0,ct.canvas.width,ct.canvas.height);
@@ -189,11 +187,11 @@
 
                 
             };
+            */
             
             
             
-            
-            //ct.fillRect(0, 0, canvas.width, canvas.height);
+            ct.fillRect(0, 0, canvas.width, canvas.height);
 
         }
         
