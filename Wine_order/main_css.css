@@ -9,7 +9,7 @@
     --ord_bg_color:white;
     --ord_bg_color_light:white;
     --mph:90vh;
-	--zoom:1;
+    --zoom:1;
 }
 *{
 	margin:0;
@@ -416,8 +416,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 		bottle max width  = 0.5 main panel width
 	*/
     
-    transform: scale(var(--sc-fac)) translate(0, calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
-    
+    transform: scale(var(--sc-fac)) translate(calc((-450px / 2 / var(--sc-fac) + 226px)), calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
     -webkit-transform-origin-x: left;
     transform-origin-x: left;
     transform-origin: top;
