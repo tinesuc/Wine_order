@@ -335,10 +335,8 @@
             
         }
 		set_zero = (event, ell) => {
-            console.log("   ijzjzj "+ell.value);
             if(ell.value==""){
                 ell.value=clamp(parseInt(ell.value),0,99);
-                console.log("   frbeb "+ell.value);
                 li = Array.prototype.slice.call( document.querySelector('#selector > ul').children ),
                 liRef = ell.closest("li");
                 index = li.indexOf( liRef )
@@ -629,7 +627,7 @@
                                         <span>150.99€</span>
                                     </div>
                                     <div class="input">
-                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="console.log('huh');set_zero(event,this);">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
                                     </div>
                                     <div class="image">
                                         <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
