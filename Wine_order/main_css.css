@@ -37,7 +37,7 @@ span, label{
 body{
 	height:95vh;
 	background-image:url("images/bar-scene-background2-blur7.png");
-	background-size: 200vh;
+	background-size: 250vh;
 	background-position: 40% 0%;
 	/*background-image:url("bar-scene-background.jpg");
 	background-size: 200vh;
@@ -412,7 +412,9 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 
 
 #bottle_panel{
-    --sc-fac:calc(0.35 / var(--zoom));
+    --want-h:0.35;
+    --sc-fac:calc(var(--zoom) * var(--want-h));
+    --pad-l:calc(2.5vw*var(--zoom));
 	/*background-color:blue;*/
 	/*width: var(--bottle-pannel-width);
 	*/
@@ -424,7 +426,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 		bottle max width  = 0.5 main panel width
 	*/
     
-    transform: scale(var(--sc-fac)) translate(calc((-450px / 2 / var(--sc-fac) + 226px)), calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
+    transform: scale(var(--sc-fac)) translate(calc((-450px / 2 / var(--sc-fac) + 226px + var(--pad-l))), calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
     -webkit-transform-origin-x: left;
     transform-origin-x: left;
     transform-origin: top;
