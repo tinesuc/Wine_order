@@ -18,6 +18,9 @@
         wsum = 0;
         info_list = Array(6).fill(0);
         isum = 0;
+        aspect =0;
+        wh=0;
+        ww=0;
         manage_input_panel = (event) =>{
             if(Date.now()-time2>100&&bool2){
                 bool2=false;
@@ -116,6 +119,10 @@
         resize_handle = (event) => {
             zoom = window.devicePixelRatio * 1;
             console.log(zoom);
+            ww=window.innerWidth;
+            wh=window.innerHeight;
+            aspect = ww/wh;
+            console.log(aspect);
             let root = document.querySelector(":root");
             root.style.setProperty('--zoom', zoom);
             
@@ -132,6 +139,19 @@
             //-------------
             manage_input_panel(event);
             manage_wine_items(event, 1);
+            bottle = document.querySelector("#bottle_panel");
+            want_h = 1;
+            bottle.style.setProperty('--want-h', want_h);
+            bh = parseInt(window.getComputedStyle(bottle).getPropertyValue('height'));
+            console.log(ww+"  "+wh);
+            console.log(bh);
+            
+            mph = wh*0.9;
+            console.log(mph);
+            
+            want_h = mph/bh/zoom*0.9;
+            
+            bottle.style.setProperty('--want-h', want_h);
 		};
         function stackCanvas(c1, c2) {
             
@@ -209,6 +229,8 @@
         onloadm = () => {
             //time=Date.now();
             //console.log(time+"   tz");
+            
+        
             li = Array.prototype.slice.call( document.querySelector('#selector > ul').children )
             wines_list = Array(li.length).fill(0);
             num_of_inputs = li.length + 6;
