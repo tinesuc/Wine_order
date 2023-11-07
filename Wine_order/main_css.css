@@ -171,6 +171,7 @@ td span{
     height: 4vh;
     width: 8vh;
     font-size: 2vh;
+    border-width:0.125vw;
 }
 /****************************************/
 form{
