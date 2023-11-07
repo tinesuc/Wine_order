@@ -278,11 +278,10 @@
             ell.value="";
             ell.value = tout;
         }
-        clamp = (num, min, max, step) =>{
+        clamp = (num, min, max) =>{
             if(num=="NaN"){num="0";return;}
-            num = Math.max(0,num-min);
-            num = Math.min(max,num%step);
-            num = num + min;
+            num = Math.max(0,num);
+            num = Math.min(max,num);
             return num;
         }
         filter_num_code = (event, ell) =>{
@@ -317,7 +316,7 @@
             if(num ==0 || ell.value==""){
                 parent.classList.remove("ordered");
             }
-            ell.value=num;
+            
             
             
             li = Array.prototype.slice.call( document.querySelector('#selector > ul').children ),
@@ -336,18 +335,22 @@
             
         }
 		set_zero = (event, ell) => {
+            console.log("   ijzjzj "+ell.value);
             if(ell.value==""){
-                ell.value=0;
+                ell.value=clamp(parseInt(ell.value),0,99);
+                console.log("   frbeb "+ell.value);
+                li = Array.prototype.slice.call( document.querySelector('#selector > ul').children ),
+                liRef = ell.closest("li");
+                index = li.indexOf( liRef )
+                wines_list[index]=0;
+                prev = wsum;
+                wsum = wines_list.reduce((a, b) => a + b, 0);
+                if(prev != wsum){
+                    draw_bottle();
+                }
             }
-            li = Array.prototype.slice.call( document.querySelector('#selector > ul').children ),
-            liRef = ell.closest("li");
-            index = li.indexOf( liRef )
-            wines_list[index]=0;
-            prev = wsum;
-            wsum = wines_list.reduce((a, b) => a + b, 0);
-            if(prev != wsum){
-                draw_bottle();
-            }
+            ell.value=clamp(parseInt(ell.value),0,99);
+            
         }
         cut_to_2 = (num) =>{
             
@@ -368,8 +371,8 @@
                 if(id=="email"){value="<span style='color:rgb(230,230,230);'>---</span>"}
                 dest = document.querySelector("#s_"+id+" > .s_input");
                 dest.innerHTML=value;
-                console.log((counter++)+"  "+id+"   "+value);
-                console.log(invalids);
+                //console.log((counter++)+"  "+id+"   "+value);
+                //console.log(invalids);
             }
             phn1 = document.querySelector("#phone_n1").value;
             phn2 = document.querySelector("#phone_n2").value;
@@ -419,7 +422,7 @@
                 price = Number(price.substring(0, price.length-1));
                 amount = parseInt(orr_wines[i].querySelector(".input > input").value);
                 tax = 0.22;
-                console.log((counter++)+"   "+name+"  "+price+"  "+amount);
+                //console.log((counter++)+"   "+name+"  "+price+"  "+amount);
                 
                 
                 
@@ -626,7 +629,7 @@
                                         <span>150.99€</span>
                                     </div>
                                     <div class="input">
-                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="console.log('huh');set_zero(event,this);">
                                     </div>
                                     <div class="image">
                                         <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
