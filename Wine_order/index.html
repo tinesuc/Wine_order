@@ -141,7 +141,7 @@
             manage_wine_items(event, 1);
             bottle = document.querySelector("#bottle_panel");
             want_h = 1;
-            bottle.style.setProperty('--want-h', want_h);
+            root.style.setProperty('--want-h', want_h);
             bh = parseInt(window.getComputedStyle(bottle).getPropertyValue('height'));
             console.log(ww+"  "+wh);
             console.log(bh);
@@ -151,7 +151,7 @@
             
             want_h = mph/bh/zoom*0.9;
             
-            bottle.style.setProperty('--want-h', want_h);
+            root.style.setProperty('--want-h', want_h);
 		};
         function stackCanvas(c1, c2) {
             
