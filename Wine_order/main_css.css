@@ -424,7 +424,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 
 
 #bottle_panel{
-    --want-h:0.35;
+
     --sc-fac:calc(var(--zoom) * var(--want-h));
     --pad-l:calc(2.5vw*var(--zoom));
 	/*background-color:blue;*/
