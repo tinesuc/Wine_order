@@ -60,7 +60,12 @@ body{
 	float:left;
 	border-radius:0.5625vw;
 }
-
+html:has(.folded_input){
+    overflow: unset;
+}
+#main_panel:has(.folded_input){
+    height:unset;
+}
 
 #title{
 	width:100%;
@@ -185,7 +190,7 @@ form{
 #selector{
 	margin:1vw;
 	border:0.25vw solid gray;
-	height:calc(55% - 2*1vw);
+	height:/*calc(55% - 2*1vw);*/calc(var(--mph)*0.55 - min(9vh, 5.5vw));
 }
 #selector ul{
 	margin:1vw 0vw 1vw 1vw;
