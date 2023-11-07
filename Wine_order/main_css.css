@@ -123,7 +123,7 @@ td span{
     flex:1;
     display:inline-block;
     width:30%;
-    min-width:12.1ch;
+    min-width:calc(12.1ch / var(--zoom));
 }
 #table li > div > .label > label{
     min-width:100%;
@@ -131,16 +131,20 @@ td span{
 #table li > div > .input{
     display:inline-block;
     width:60%;
-    min-width:22ch;
+    min-width:calc(22ch / var(--zoom));
+    transform:translateY(10%);
 }
 #table li > div > .input > input{
     min-width:100%;
+}
+li:has(#submit_swal){
+    line-height:0vh;
 }
 
 /****************INPUTS***********/
 #name,#name2,#addr,#postal,#emailid,#phoneid{
 	width:100%;
-    /*line-height:4vh;*/
+    line-height:0vh;
 	display:flex;
 }
 #ime,#priimek,#posta,#naslov,#email,#phone{
@@ -365,6 +369,9 @@ form{
 .folded_input .info_item > .label{
     text-align:center !important;
 }
+/*.folded_input .info_item > .input{
+    min-width: unset !important;
+}*/
 @media (max-aspect-ratio: 0.8) {
     .info_item{
         display:block !important;
