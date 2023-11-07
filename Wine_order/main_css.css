@@ -405,7 +405,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 
 #bottle_panel{
     --sc-fac:calc(0.35 / var(--zoom));
-	background-color:blue;
+	/*background-color:blue;*/
 	/*width: var(--bottle-pannel-width);
 	*/
     height:1800px;
