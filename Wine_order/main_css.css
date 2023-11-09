@@ -54,7 +54,7 @@ body{
 }
 @media (max-aspect-ratio: 1/1) {
     #main_panel{
-        margin-left:calc(50% - var(--in-pannel-width)/2 - (450px*var(--want-h)/2/var(--zoom)));
+        margin-left: calc(50vw - var(--in-pannel-width)/2 - (450px*var(--want-h)/8/var(--zoom)));;
     }
 }
 #input_panel{
@@ -69,8 +69,11 @@ body{
 html:has(.folded_input){
     overflow: unset;
 }
+body:has(.folded_input){
+    height:fit-content;
+}
 #main_panel:has(.folded_input){
-    height:unset;
+    height:fit-content;
     margin-bottom: 5vh;
 }
 
@@ -290,10 +293,14 @@ form{
 	display: table-cell;
 	vertical-align: middle;
     position:relative;
+    white-space: nowrap; 
 }
-.animate .wine_item:hover  .text > span{
+.wine_item:hover  .text > span.animate{
 	animation: leftright 2s infinite alternate ease-in-out;
     
+}
+.w_tax{
+    display:none;
 }
 .control_pane{
 	min-width:40%;
