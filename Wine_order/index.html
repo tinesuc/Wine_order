@@ -21,8 +21,11 @@
         aspect =0;
         wh=0;
         ww=0;
+        resize_h_runs=0;
+        prev_w=0;
+        prev_h=0;
         manage_input_panel = (event) =>{
-            if(Date.now()-time2>100&&bool2){
+            //if(Date.now()-time2>0&&bool2){
                 bool2=false;
                 time2=Date.now();
                 
@@ -52,12 +55,12 @@
                     }
                 }
                 bool2=true;
-            }
+            //}
         }
         manage_wine_items = (event, runs) =>{
             
             //-----wine list items count-----aspect ratio:6-10----item count 3-6/7---||---------------low frame aspect-ratio: wrap control_panel------flex-flow: column;---liheight*2-+-flex corection/2
-            if(Date.now()-time>100&&bool){
+            //if(Date.now()-time>0&&bool){
                 bool=false;
                 time=Date.now();
                 for(i=0;i<runs;i++){
@@ -102,7 +105,7 @@
                 }
                 
                 bool=true;
-            }
+            //}
             
             
             /*
@@ -117,25 +120,40 @@
             
         }
         resize_handle = (event) => {
+            
             zoom = window.devicePixelRatio * 1;
             console.log(zoom);
             ww=window.innerWidth;
             wh=window.innerHeight;
             aspect = ww/wh;
-            console.log(aspect);
+            //console.log(aspect);
             let root = document.querySelector(":root");
             root.style.setProperty('--zoom', zoom);
-            
-            //----overflowing text-----
-            let container = document.querySelector(".text");
-            let padding_left = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-left'));
-            let padding_right = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-right'));
-            let text = document.querySelector("#selector");
-            if (container.clientWidth-padding_left-padding_right < text.clientWidth) {
-                text.classList.add("animate");
-            }else{
-                text.classList.remove("animate");
+            pw=prev_w/ww;
+            ph=prev_h/wh;
+            prev_w=ww;
+            prev_h=wh;
+            if(pw<0.99||pw>1.01||ph<0.99||ph>1.01){
+                for(i=0;i<7;i++){
+                    //resize_handle(event);
+                }
             }
+            //----overflowing text-----
+            let containers = document.querySelectorAll(".text");
+            for(i=0;i<containers.length ;i++){
+                container=containers[i];
+                
+                let padding_left = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-left'));
+                let padding_right = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-right'));
+                let text = container.querySelector("span");
+                if (container.clientWidth-padding_left-padding_right < text.clientWidth) {
+                    text.classList.add("animate");
+                }else{
+                    text.classList.remove("animate");
+                }
+            }
+            
+            
             //-------------
             manage_input_panel(event);
             manage_wine_items(event, 1);
@@ -143,15 +161,21 @@
             want_h = 1;
             root.style.setProperty('--want-h', want_h);
             bh = parseInt(window.getComputedStyle(bottle).getPropertyValue('height'));
-            console.log(ww+"  "+wh);
-            console.log(bh);
+            //console.log(ww+"  "+wh);
+            //console.log(bh);
             
             mph = wh*0.9;
             //console.log(mph);
             
             want_h = mph/bh/zoom*0.9;
+            if(bh*zoom*want_h>mph){
+                want_h= mph/bh*0.9;
+            }
             
             root.style.setProperty('--want-h', want_h);
+
+            
+
 		};
         function stackCanvas(c1, c2) {
             
@@ -229,8 +253,12 @@
         onloadm = () => {
             //time=Date.now();
             //console.log(time+"   tz");
+            ww=window.innerWidth;
+            wh=window.innerHeight;
+            prev_w=ww;
+            prev_h=wh;
             
-        
+            doc_full=document.fullscreenElement;
             li = Array.prototype.slice.call( document.querySelector('#selector > ul').children )
             wines_list = Array(li.length).fill(0);
             num_of_inputs = li.length + 6;
@@ -441,8 +469,8 @@
                 price = orr_wines[i].querySelector(".price > span").innerHTML;
                 price = Number(price.substring(0, price.length-1));
                 amount = parseInt(orr_wines[i].querySelector(".input > input").value);
-                tax = 0.22;
-                //console.log((counter++)+"   "+name+"  "+price+"  "+amount);
+                tax = Number(orr_wines[i].querySelector(".w_tax").innerHTML);
+                console.log((counter++)+"   "+name+"  "+price+"  "+amount+"   "+tax);
                 
                 
                 
@@ -490,7 +518,7 @@
                     "</tr>"+
                     "<tr style='width:100%;'>"+
                     "   <td class='s_tax' style='width:33%; text-align:right;'>"+(item.tax*100).toFixed(2)+"%</td>"+
-                    "   <td class='s_price' style='width:33%; text-align:right;'>"+item.price+"</td>"+
+                    "   <td class='s_price' style='width:33%; text-align:right;'>"+(item.price).toFixed(2)+"</td>"+
                     "   <td class='s_cost' style='width:33%; text-align:right;'>"+item.cost.toFixed(2)+"</td>"+
                     "</tr>";
             }
@@ -636,23 +664,26 @@
 							<div class="wine_item">
                                 <div class="wine_pane">
                                     <div class="image">
-                                        <img src="images/mini_bottle_templ.png" alt="Image of bottle">
+                                        <img src="images/malvazija.png" alt="Slika Malvazije">
                                     </div>
                                     <div class="text">
-                                        <span>wurcktzzjkrzzkrkdkdrzk</span>
+                                        <span>Malvazija 0.5l</span>
                                         <div class="fade-left"></div>
                                         <div class="fade-right"></div>
                                     </div>
 								</div>
 								<div class="control_pane">
                                     <div class="price">
-                                        <span>150.99€</span>
+                                        <span>49.99€</span>
                                     </div>
                                     <div class="input">
                                         <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
                                     </div>
                                     <div class="image">
                                         <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
+                                    <div class="w_tax">
+                                        0.12
                                     </div>
 								</div>
 							</div>
@@ -661,17 +692,17 @@
 							<div class="wine_item">
                                 <div class="wine_pane">
                                     <div class="image">
-                                        <img src="images/mini_bottle_templ.png" alt="Image of bottle">
+                                        <img src="images/teran.png" alt="Slika Terana">
                                     </div>
                                     <div class="text">
-                                        <span>wurcktzzjkrzzkrkdkdrzk</span>
+                                        <span>Teran 1l</span>
                                         <div class="fade-left"></div>
                                         <div class="fade-right"></div>
                                     </div>
 								</div>
 								<div class="control_pane">
                                     <div class="price">
-                                        <span>150.99€</span>
+                                        <span>44.99€</span>
                                     </div>
                                     <div class="input">
                                         <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
@@ -679,10 +710,152 @@
                                     <div class="image">
                                         <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
                                     </div>
+                                    <div class="w_tax">
+                                        0.22
+                                    </div>
 								</div>
 							</div>
 						</li>
-
+                        <li>
+							<div class="wine_item">
+                                <div class="wine_pane">
+                                    <div class="image">
+                                        <img src="images/teran_lite.png" alt="Slika Terana">
+                                    </div>
+                                    <div class="text">
+                                        <span>Teran 0.5l</span>
+                                        <div class="fade-left"></div>
+                                        <div class="fade-right"></div>
+                                    </div>
+								</div>
+								<div class="control_pane">
+                                    <div class="price">
+                                        <span>24.99€</span>
+                                    </div>
+                                    <div class="input">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                    </div>
+                                    <div class="image">
+                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
+                                    <div class="w_tax">
+                                        0.22
+                                    </div>
+								</div>
+							</div>
+						</li>
+                        <li>
+							<div class="wine_item">
+                                <div class="wine_pane">
+                                    <div class="image">
+                                        <img src="images/oranzni.png" alt="Slika Oranžina">
+                                    </div>
+                                    <div class="text">
+                                        <span>Oranžin 1l</span>
+                                        <div class="fade-left"></div>
+                                        <div class="fade-right"></div>
+                                    </div>
+								</div>
+								<div class="control_pane">
+                                    <div class="price">
+                                        <span>62.00€</span>
+                                    </div>
+                                    <div class="input">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                    </div>
+                                    <div class="image">
+                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
+                                    <div class="w_tax">
+                                        0.19
+                                    </div>
+								</div>
+							</div>
+						</li>
+                        <li>
+							<div class="wine_item">
+                                <div class="wine_pane">
+                                    <div class="image">
+                                        <img src="images/rizling.png" alt="Slika Laškega rizlinga">
+                                    </div>
+                                    <div class="text">
+                                        <span>Laški Rizling 0.5l</span>
+                                        <div class="fade-left"></div>
+                                        <div class="fade-right"></div>
+                                    </div>
+								</div>
+								<div class="control_pane">
+                                    <div class="price">
+                                        <span>17.60€</span>
+                                    </div>
+                                    <div class="input">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                    </div>
+                                    <div class="image">
+                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
+                                    <div class="w_tax">
+                                        0.22
+                                    </div>
+								</div>
+							</div>
+						</li>
+                        <li>
+							<div class="wine_item">
+                                <div class="wine_pane">
+                                    <div class="image">
+                                        <img src="images/rumeni_muskat.png" alt="Slika Rumenega Mužkata">
+                                    </div>
+                                    <div class="text">
+                                        <span>Rumeni Muškat 0.5l</span>
+                                        <div class="fade-left"></div>
+                                        <div class="fade-right"></div>
+                                    </div>
+								</div>
+								<div class="control_pane">
+                                    <div class="price">
+                                        <span>23.79€</span>
+                                    </div>
+                                    <div class="input">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                    </div>
+                                    <div class="image">
+                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
+                                    <div class="w_tax">
+                                        0.09
+                                    </div>
+								</div>
+							</div>
+						</li>
+                        <li>
+							<div class="wine_item">
+                                <div class="wine_pane">
+                                    <div class="image">
+                                        <img src="images/zganje.png" alt="Slika žganja">
+                                    </div>
+                                    <div class="text">
+                                        <span>Žganje 0.4l</span>
+                                        <div class="fade-left"></div>
+                                        <div class="fade-right"></div>
+                                    </div>
+								</div>
+								<div class="control_pane">
+                                    <div class="price">
+                                        <span>149.99€</span>
+                                    </div>
+                                    <div class="input">
+                                        <input type="number" min="0" value="0" step="1" max="99" onkeyup="filter_num_code(event, this); num_input(event, this);" onkeydown="filter_num_code(event, this); num_input(event, this);" onchange="num_input(event, this);" onblur="set_zero(event,this);">
+                                    </div>
+                                    <div class="image">
+                                        <img src="images/cancel.png" alt="Clear selection" onclick="reset_sel(event, this);">
+                                    </div>
+                                    <div class="w_tax">
+                                        0.39
+                                    </div>
+								</div>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</form>
