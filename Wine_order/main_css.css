@@ -6,11 +6,13 @@
 	--item-border:0.0625vw;
 	--num-of-items:4;
     --default-num:3.5;
-    --ord_bg_color:white;
-    --ord_bg_color_light:white;
     --mph:90vh;
     --zoom:1;
     --want-h:0.35;
+    --wine-item-color:rgb(255 231 142);
+    --ord_bg_color:var(--wine-item-color);
+    --input-bg-color:#f97b7b54;
+    --ord_bg_color_light:var(--input-bg-color);
 }
 *{
 	margin:0;
@@ -107,6 +109,7 @@ input, textarea, select{
 	border-radius:0;
 	font-size:2.5vh;
     vertical-align: middle;
+    background-color:var(--input-bg-color);
 }
 input:focus-visible{
 	outline:0.0625vw solid grey;
@@ -127,6 +130,7 @@ label{
 }
 ul{
 	list-style-type:none;
+    scrollbar-color:rgb(0 0 0 / 0);
 }
 /*#table li{
     line-height:4.5vh;
@@ -445,7 +449,7 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 		bottle max width  = 0.5 main panel width
 	*/
     
-    transform: scale(var(--sc-fac)) translate(calc((-450px / 2 / var(--sc-fac) + 226px + var(--pad-l))), calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
+    transform: scale(var(--sc-fac)) translate(calc((-450px / 2 / var(--sc-fac) + 240px + var(--pad-l))), calc((1*(var(--mph) - var(--sc-fac) * 1800px)) / var(--sc-fac)));
     -webkit-transform-origin-x: left;
     transform-origin-x: left;
     transform-origin: top;
@@ -506,17 +510,33 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
     height:1800px;
 }
 
-#actual_bottle{
-    /*transform: scale(0.5) translate(6px, 27px);*/
-    height:100%;
+#main_panel{
+    position: absolute;
 }
-    
 
+#wave{
+    position: absolute;
+    z-index: -10;
+    top: 0;
+    left: 0;
+}
 
+#input_panel{
+    background: url(images/wave-clear.png);
+    background-size:100% 100%;
+    background-position-y: 127px;
+    background-repeat: no-repeat;
+}
+#wave{
+    width:var(--in-pannel-width);
+    height:100%;
+    background-color: rgb(255 233 1);
+    border-radius: 0.6625vw;
+}
 
-
-
-
+.wine_item:not(.ordered){
+    background-color: var(--wine-item-color);
+}
 
 
 
