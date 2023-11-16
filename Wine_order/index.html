@@ -129,6 +129,7 @@
             //console.log(aspect);
             let root = document.querySelector(":root");
             root.style.setProperty('--zoom', zoom);
+            root.style.setProperty('--aspect', aspect);
             pw=prev_w/ww;
             ph=prev_h/wh;
             prev_w=ww;
@@ -579,9 +580,6 @@
 	<div id="main_panel">
 		<div id="input_panel">
             <div id="wave">
-                <!--<svg  preserveAspectRatio="none" >
-                    <path d style="stroke: none; fill: #08f;"></path>
-                </svg>-->
             </div>
             <div id="title">
 				<h1>
@@ -868,7 +866,6 @@
 		<div id="bottle_panel">
             
             <div id="bottle_cont">
-                <!-- 5-neck 15-bottle 60-high -->
                 <canvas id="canvas"></canvas>
             </div>
             <img style="display:none;" id="mask" src="images/side_bottle_mask.png" alt="image of a bottle">
