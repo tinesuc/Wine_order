@@ -195,7 +195,7 @@ li:has(#submit_swal){
     height: 4vh;
     width: 8vh;
     font-size: 2vh;
-    border-width:0.125vw;
+    border-width:calc(1px / var(--zoom));
     background-color:rgb(255,201,14)
 }
 /****************************************/
