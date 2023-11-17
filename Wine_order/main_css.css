@@ -361,7 +361,7 @@ form{
 .control_pane > .input > input::selection {
     background: rgba(0,0,0,0);
 }
-:invalid:not(form, [value=""]){
+:invalid:not(form, [value=""], :focus-within){
     background-color:rgb(240,40,10);
 }
 .control_pane > .image{
@@ -408,15 +408,6 @@ form{
         text-align:center !important;
     }
 }
-/* 
-TODO:
-fix background image repeating at large aspect ratio
-make min aspect 1/1 for center other wise shift left for larger bottle --> flex box for name/input
-+wrap input fields
-
-
-animatins. https://codepen.io/pawankolhe/pen/abvMjGB
-*/
 
 #s_info li{
     display:flex;
