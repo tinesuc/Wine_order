@@ -553,11 +553,11 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 
 
 :root{
-    --sb-col1:rgb(255,127,39);
+    --sb-col1:rgb(245 168 124);
     --sb-col2:rgb(241,202,14);
     --sb-col2h:rgb(245,226,56);
     --sb-col2p:rgb(242,247,91);
-    --sb-col1p:rgb(255,166,106);
+    --sb-col1p:rgb(239 140 73);
     --sb-col3:rgb(237,28,36);
     --sb-col3h:rgb(244,55,126);
     --sb-col3p:rgb(247,89,101);
