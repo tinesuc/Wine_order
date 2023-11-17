@@ -119,6 +119,21 @@
              */
             
         }
+        manage_anim = (event) =>{
+            let containers = document.querySelectorAll(".text");
+            for(i=0;i<containers.length ;i++){
+                container=containers[i];
+                
+                let padding_left = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-left'));
+                let padding_right = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-right'));
+                let text = container.querySelector("span");
+                if (container.clientWidth-padding_left-padding_right < text.clientWidth) {
+                    text.classList.add("animate");
+                }else{
+                    text.classList.remove("animate");
+                }
+            }
+        }
         resize_handle = (event) => {
             
             zoom = window.devicePixelRatio * 1;
@@ -140,20 +155,8 @@
                 }
             }
             //----overflowing text-----
-            let containers = document.querySelectorAll(".text");
-            for(i=0;i<containers.length ;i++){
-                container=containers[i];
-                
-                let padding_left = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-left'));
-                let padding_right = parseFloat(window.getComputedStyle(container, null).getPropertyValue('padding-right'));
-                let text = container.querySelector("span");
-                if (container.clientWidth-padding_left-padding_right < text.clientWidth) {
-                    text.classList.add("animate");
-                }else{
-                    text.classList.remove("animate");
-                }
-            }
             
+            manage_anim(event);
             
             //-------------
             manage_input_panel(event);
@@ -269,10 +272,8 @@
             draw_bottle();
             
             window.setInterval(()=>{
-                resize_handle(null);
-                resize_handle(null);
-                resize_handle(null);
-                resize_handle(null);
+                manage_wine_items(event, 4);
+                manage_anim(event);
             }, 3000);
         };
         addEventListener("resize", resize_handle);
