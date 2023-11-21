@@ -10,10 +10,12 @@
     --zoom:1;
     --aspect:16/9;
     --want-h:0.35;
-    --wine-item-color:rgb(255 231 142);
+    --wine-item-color:rgb(247 247 247);
     --ord_bg_color:var(--wine-item-color);
-    --input-bg-color:#f97b7b54;
+    --input-bg-color:#d1d1d154;
     --ord_bg_color_light:var(--input-bg-color);
+    --col-1: rgb(255 255 255);
+    --but-c:rgb(235 235 235);
 }
 *{
 	margin:0;
@@ -26,8 +28,8 @@ html{
     overflow: hidden;
 }
 .ordered{
-    --ord_bg_color:#68dc68;
-    --ord_bg_color_light:#8ef48e;
+    --ord_bg_color: #a8ffa8;
+    --ord_bg_color_light: #c8ffc8;
 }
 span.req{
     color:red;
@@ -196,7 +198,7 @@ li:has(#submit_swal){
     width: 8vh;
     font-size: 2vh;
     border-width:calc(1px / var(--zoom));
-    background-color:rgb(255,201,14)
+    background-color:var(--but-c);
 }
 /****************************************/
 form{
@@ -295,7 +297,7 @@ form{
     background: linear-gradient(270deg, var(--ord_bg_color) 0px, rgb(255 255 255 / 0%) 100%);
 }
 .text > span {
-	font-size:calc(3.2vh / var(--num-of-items) * var(--default-num));
+	font-size:calc(3vh / var(--num-of-items) * var(--default-num));
 	display: table-cell;
 	vertical-align: middle;
     position:relative;
@@ -340,7 +342,7 @@ form{
     margin-right:0.5vw;
 }
 .control_pane > .price > span{
-    font-size:calc(2.5vh / var(--num-of-items) * var(--default-num));
+    font-size:calc(2.2vh / var(--num-of-items) * var(--default-num));
 	display: table-cell;
 	vertical-align: middle;
     position:relative;
@@ -352,7 +354,7 @@ form{
     flex:1;
 }
 .control_pane > .input > input{
-    font-size:calc(3.5vh / var(--num-of-items) * var(--default-num));
+    font-size:calc(3.2vh / var(--num-of-items) * var(--default-num));
     vertical-align: middle;
     min-width:3.3ch;
     width:100%;
@@ -408,6 +410,15 @@ form{
         text-align:center !important;
     }
 }
+/* 
+TODO:
+fix background image repeating at large aspect ratio
+make min aspect 1/1 for center other wise shift left for larger bottle --> flex box for name/input
++wrap input fields
+
+
+animatins. https://codepen.io/pawankolhe/pen/abvMjGB
+*/
 
 #s_info li{
     display:flex;
@@ -523,7 +534,7 @@ form{
 #wave{
     width:var(--in-pannel-width);
     height:100%;
-    background-color: rgb(255 233 1);
+    background-color:var(--col-1);
     border-radius: 0.6625vw;
 }
 
@@ -544,14 +555,14 @@ form{
 
 
 :root{
-    --sb-col1:rgb(245 168 124);
-    --sb-col2:rgb(241,202,14);
-    --sb-col2h:rgb(245,226,56);
-    --sb-col2p:rgb(242,247,91);
-    --sb-col1p:rgb(239 140 73);
-    --sb-col3:rgb(237,28,36);
-    --sb-col3h:rgb(244,55,126);
-    --sb-col3p:rgb(247,89,101);
+    --sb-col1: rgb(177 177 177);
+    --sb-col2: rgb(217 217 217);
+    --sb-col2h: rgb(225 225 224);
+    --sb-col2p: rgb(235 235 235);
+    --sb-col1p:rgb(197 197 197);
+    --sb-col3: rgb(57 57 57);
+    --sb-col3h: rgb(89 89 89);
+    --sb-col3p: rgb(145 145 145);
 }
 
 /*
@@ -559,10 +570,10 @@ scrolbar stuff sfound on:
 https://codepen.io/patrikx3/pen/ZEBQQyV
 */
 ::-webkit-scrollbar {
-    width: 16px;
-    height: 16px;
-    border: 1px solid black;
-    margin:1px;
+    width: 1vw;
+    height: 1vh;
+    border: 0.0625vw solid black;
+    margin:0.0625vw;
 }
 
 ::-webkit-scrollbar-corner,
@@ -573,7 +584,7 @@ https://codepen.io/patrikx3/pen/ZEBQQyV
 ::-webkit-scrollbar-thumb {
     background-color: var(--sb-col2);
     background-clip: padding-box;
-    border: 2px solid transparent;
+    border: 0.135vw solid transparent;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -589,85 +600,96 @@ https://codepen.io/patrikx3/pen/ZEBQQyV
     background-color: var(--sb-col1);
 
     display: block;
-    background-size: 10px;
+    background-size: 0.625vw;
     background-repeat: no-repeat;
 }
 ::-webkit-scrollbar-button:single-button:active {
     background-color: var(--sb-col1p);
 
     display: block;
-    background-size: 10px;
+    background-size: 0.625vw;
     background-repeat: no-repeat;
 }
 
 
 /* Up */
 ::-webkit-scrollbar-button:single-button:vertical:decrement {
-    height: 12px;
-    width: 16px;
-    background-position: center 4px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(237,28,36)'><polygon points='50,00 0,50 100,50'/></svg>");
+    height: 0.75vw;
+    width: 1vw;
+    background-position: center 0.25vw;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(57 57 57)'><polygon points='50,00 0,50 100,50'/></svg>");
 }
 
 ::-webkit-scrollbar-button:single-button:vertical:decrement:hover {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(244,55,126)'><polygon points='50,00 0,50 100,50'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(89 89 89)'><polygon points='50,00 0,50 100,50'/></svg>");
 }
 
 ::-webkit-scrollbar-button:single-button:vertical:decrement:active {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(247,89,101)'><polygon points='50,00 0,50 100,50'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(145 145 145)'><polygon points='50,00 0,50 100,50'/></svg>");
 }
 
 /* Down */
 ::-webkit-scrollbar-button:single-button:vertical:increment {
-    height: 12px;
-    width: 16px;
-    background-position: center 2px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(237,28,36)'><polygon points='0,0 100,0 50,50'/></svg>");
+    height: 0.75vw;
+    width: 1vw;
+    background-position: center 0.25vw;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(57 57 57)'><polygon points='0,0 100,0 50,50'/></svg>");
 }
 
 ::-webkit-scrollbar-button:single-button:vertical:increment:hover {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(244,55,126)'><polygon points='0,0 100,0 50,50'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(89 89 89)'><polygon points='0,0 100,0 50,50'/></svg>");
 }
 
 ::-webkit-scrollbar-button:single-button:vertical:increment:active {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(247,89,101)'><polygon points='0,0 100,0 50,50'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(145 145 145)'><polygon points='0,0 100,0 50,50'/></svg>");
 }
 
 /* Left */
 ::-webkit-scrollbar-button:single-button:horizontal:decrement {
-    height: 12px;
-    width: 12px;
-    background-position: 3px 3px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(237,28,36)'><polygon points='0,50 50,100 50,0'/></svg>");
+    height: 0.75vw;
+    width: 0.75vw;
+    background-position: 0.1875vw 0.1875vh;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(57 57 57)'><polygon points='0,50 50,100 50,0'/></svg>");
 
 }
 
 ::-webkit-scrollbar-button:single-button:horizontal:decrement:hover {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(244,55,126)'><polygon points='0,50 50,100 50,0'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(89 89 89)'><polygon points='0,50 50,100 50,0'/></svg>");
 }
 
 ::-webkit-scrollbar-button:single-button:horizontal:decrement:active {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(247,89,101)'><polygon points='0,50 50,100 50,0'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(145 145 145)'><polygon points='0,50 50,100 50,0'/></svg>");
 }
 
 /* Right */
 ::-webkit-scrollbar-button:single-button:horizontal:increment {
-    height: 12px;
-    width: 12px;
-    background-position: 3px 3px;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(237,28,36)'><polygon points='0,0 0,100 50,50'/></svg>");
+    height: 0.75vw;
+    width: 0.75vw;
+    background-position: 0.1875vw 0.1875vh;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(57 57 57)'><polygon points='0,0 0,100 50,50'/></svg>");
 }
 
 ::-webkit-scrollbar-button:single-button:horizontal:increment:hover {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(244,55,126)'><polygon points='0,0 0,100 50,50'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(89 89 89)'><polygon points='0,0 0,100 50,50'/></svg>");
 }
 
 ::-webkit-scrollbar-button:single-button:horizontal:increment:active {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(247,89,101)'><polygon points='0,0 0,100 50,50'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='rgb(145 145 145)'><polygon points='0,0 0,100 50,50'/></svg>");
 }
 
 
 
+
+#table input::-webkit-outer-spin-button,
+#table input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#table input[type=number] {
+  -moz-appearance: textfield;
+}
 
 
 
