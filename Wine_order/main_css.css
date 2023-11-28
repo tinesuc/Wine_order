@@ -375,6 +375,7 @@ form{
     min-width:calc(3.3ch/var(--fscl-r));
     width:100%;
     background-color: var(--ord_bg_color_light);
+    padding: 0 0 0 0.2ch;
 }
 .control_pane > .input > input::selection {
     background: rgba(0,0,0,0);
