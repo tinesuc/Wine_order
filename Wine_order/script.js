@@ -483,7 +483,9 @@ form_submit = (event, ell) => {
         name = orr_wines[i].querySelector(".text > span").innerHTML;
         price = orr_wines[i].querySelector(".price > span").innerHTML;
         price = Number(price.substring(0, price.length - 1));
-        amount = parseInt(orr_wines[i].querySelector(".input > input").value);
+        t=orr_wines[i].querySelector(".input > input").value;
+        if(t==""){t="0";}
+        amount = parseInt(t);
         tax = Number(orr_wines[i].querySelector(".w_tax").innerHTML);
         console.log((counter++) + "   " + name + "  " + price + "  " + amount + "   " + tax);
 
