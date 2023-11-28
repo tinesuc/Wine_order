@@ -422,6 +422,7 @@ form_submit = (event, ell) => {
         id = input.id;
         value = input.value;
         if (value == "" && id != "email" || id == "email" && !input.checkValidity()) {
+            if(id=="posta"){id="poĹˇta";}
             invalids.push(id);
             continue;
         }
@@ -437,13 +438,13 @@ form_submit = (event, ell) => {
     dest = document.querySelector("#s_phone > .s_input");
     if (!(phn1.length == 3 && phn2.length == 3 && phn3.length == 4)) {
         if (!(phn1.length == 0 && phn2.length == 0 && phn3.length == 0)) {
-            invalids.push("telefonska stevilka");
+            invalids.push("telefonska Ĺˇtevilka");
         } else {
             dest.innerHTML = "<span style='color:rgb(230,230,230);user-select: none;'>---</span>"
         }
     } else {
         if(phn1!=parseInt(phn1)||phn2!=parseInt(phn2)||phn3!=parseInt(phn3)){
-            invalids.push("telefonska stevilka");
+            invalids.push("telefonska Ĺˇtevilka");
         }else{
             dest.innerHTML = phn1 + "-" + phn2 + "-" + phn3;
         }
@@ -454,15 +455,16 @@ form_submit = (event, ell) => {
         msg = "";
         for (i = 0; i < invalids.length; i++) {
             if (i != invalids.length - 1) {
-                msg += "<span style='color:red;'>" + invalids[i] + "</span>, "
+                msg += "<span style='color:#f27474'>" + invalids[i] + "</span>, "
             } else {
-                msg += "<span style='color:red;'>" + invalids[i] + "</span>"
+                msg += "<span style='color:#f27474'>" + invalids[i] + "</span>"
             }
         }
         Swal.fire({
-            title: '<strong>Napečni vnosi</strong>',
+            title: '<strong>NapaÄŤni vnosi</strong>',
             icon: 'error',
             html: "Prosim pravilno vnesite naslednje podatke: " + msg + ".",
+            confirmButtonColor: 'indigo',
             showCloseButton: true,
         })
 
@@ -517,9 +519,10 @@ form_submit = (event, ell) => {
 
     if (ordered.length == 0) {
         Swal.fire({
-            title: '<strong>Ni naročila</strong>',
+            title: '<strong>Ni naroÄŤila</strong>',
             icon: 'error',
             html: "Prosimo da izberete vina za nakup.",
+            confirmButtonColor: 'indigo',
             showCloseButton: true,
         })
         return;
@@ -571,14 +574,16 @@ form_submit = (event, ell) => {
         showCancelButton: true,
         focusConfirm: false,
         confirmButtonText: 'Potrdi nakup',
-        cancelButtonText: 'Prekliči',
+        confirmButtonColor: 'indigo',
+        cancelButtonText: 'PrekliÄŤi',
         didOpen: () => Swal.getConfirmButton().focus()
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({
                 title: 'Potrjeno',
-                html: 'Vaš nakup je bil potrjen.',
+                html: 'VaĹˇ nakup je bil potrjen.',
                 icon: 'success',
+                confirmButtonColor: 'indigo',
                 timer: 3000,
                 timerProgressBar: true,
             })
