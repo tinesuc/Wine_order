@@ -185,6 +185,7 @@ li:has(#submit_swal){
 }
 #phone{
     font-size:calc(var(--fscl-r)*2.5vh);
+    padding:0;
 }
 #phone_n1, #phone_n2{
 	width:calc(3.3ch/var(--fscl-r));
@@ -209,7 +210,7 @@ li:has(#submit_swal){
     background-color:var(--but-c);
     cursor:pointer;
 }
-input:not(:placeholder-shown){
+:not(#phone) > input:not(:placeholder-shown){
     font-family: 'Arial'!important;
     font-size: 2vh;
     line-height: calc(2.75vh);
