@@ -521,12 +521,12 @@ animatins. https://codepen.io/pawankolhe/pen/abvMjGB
 #mask{
     position: absolute;
     z-index: 9;
-    /*mix-blend-mode: multiply;*/
+    mix-blend-mode: multiply;
 }
 #bottle{
     position: absolute;
     z-index: 11;
-    mix-blend-mode: normal;
+    /*mix-blend-mode: normal;*/
     height:1800px;
 }
 
