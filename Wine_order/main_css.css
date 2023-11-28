@@ -16,12 +16,14 @@
     --ord_bg_color_light:var(--input-bg-color);
     --col-1: rgb(255 255 255);
     --but-c:rgb(235 235 235);
+    --fscl-r:0.9;
+    --fscl-c:1;
 }
 *{
 	margin:0;
 	padding:0;
 	box-sizing: border-box;
-	font-family: Ariel;
+	font-family: Roboto;
     user-select:none;
 }
 html{
@@ -91,9 +93,10 @@ h1{
 	width:70%;
 	text-align-last: center;
 	line-height:min(9vh, 5.5vw);
-	font-size:min(7vh, 4.5vw);
+	font-size:calc(var(--fscl-c)*min(7vh, 4.5vw));
 	margin:auto;
 	white-space: nowrap;
+    font-family: 'Caveat';
 }
 table{
 	width:100%;
@@ -110,7 +113,7 @@ table{
 input, textarea, select{
 	border:0.0625vw solid grey;
 	border-radius:0;
-	font-size:2.5vh;
+	font-size:calc(var(--fscl-r)*2.5vh);
     vertical-align: middle;
     background-color:var(--input-bg-color);
 }
@@ -128,8 +131,9 @@ h3{
 }
 label{
 	line-height:4vh;
-	font-size:2.5vh;
+	font-size:calc(var(--fscl-c)*2.5vh);
     vertical-align: top;
+    font-family: 'caveat';
 }
 ul{
 	list-style-type:none;
@@ -139,13 +143,13 @@ ul{
     line-height:4.5vh;
 }*/
 td span{
-	font-size:2.5vh;
+	font-size:calc(var(--fscl-r)*2.5vh);
 }
 #table li > div > .label{
     flex:1;
     display:inline-block;
     width:30%;
-    min-width:calc(12.1ch / var(--zoom));
+    min-width:calc(12.1ch / var(--zoom)/var(--fscl-r));
 }
 #table li > div > .label > label{
     min-width:100%;
@@ -153,7 +157,7 @@ td span{
 #table li > div > .input{
     display:inline-block;
     width:60%;
-    min-width:calc(22ch / var(--zoom));
+    min-width:calc(22ch / var(--zoom)/var(--fscl-r));
     transform:translateY(10%);
 }
 #table li > div > .input > input{
@@ -164,6 +168,7 @@ li:has(#submit_swal){
 }
 
 /****************INPUTS***********/
+
 #name,#name2,#addr,#postal,#emailid,#phoneid{
 	width:100%;
     line-height:0vh;
@@ -174,16 +179,17 @@ li:has(#submit_swal){
 	float:right;
 	/*line-height:1vh;*/
 	/*margin:auto;*/
+    font-family: 'caveat';
 }
 #phone{
-    font-size:2.5vh;
+    font-size:calc(var(--fscl-r)*2.5vh);
 }
 #phone_n1, #phone_n2{
-	width:3.3ch;
+	width:calc(3.3ch/var(--fscl-r));
 	margin-right:0;
 }
 #phone_n3{
-	width:4.4ch;
+	width:calc(4.4ch/var(--fscl-r));
 }
 #submit{
     display:none;
@@ -196,10 +202,13 @@ li:has(#submit_swal){
     right:1vw;
     height: 4vh;
     width: 8vh;
-    font-size: 2vh;
+    font-size: calc(var(--fscl-r)*2.1vh);
     border-width:calc(1px / var(--zoom));
     background-color:var(--but-c);
     cursor:pointer;
+}
+input:not(:placeholder-shown){
+    font-family: 'Roboto'!important;
 }
 /****************************************/
 form{
@@ -298,11 +307,12 @@ form{
     background: linear-gradient(270deg, var(--ord_bg_color) 0px, rgb(255 255 255 / 0%) 100%);
 }
 .text > span {
-	font-size:calc(3vh / var(--num-of-items) * var(--default-num));
+	font-size:calc(var(--fscl-c)*calc(3.3vh / var(--num-of-items) * var(--default-num)));
 	display: table-cell;
 	vertical-align: middle;
     position:relative;
     white-space: nowrap; 
+    font-family: 'Caveat';
 }
 .wine_item:hover  .text > span.animate{
 	animation: leftright 2s infinite alternate ease-in-out;
@@ -343,7 +353,7 @@ form{
     margin-right:0.5vw;
 }
 .control_pane > .price > span{
-    font-size:calc(2.2vh / var(--num-of-items) * var(--default-num));
+    font-size:calc(var(--fscl-r)*calc(2.2vh / var(--num-of-items) * var(--default-num)));
 	display: table-cell;
 	vertical-align: middle;
     position:relative;
@@ -355,9 +365,9 @@ form{
     flex:1;
 }
 .control_pane > .input > input{
-    font-size:calc(3.2vh / var(--num-of-items) * var(--default-num));
+    font-size:calc(var(--fscl-r)*calc(3.2vh / var(--num-of-items) * var(--default-num)));
     vertical-align: middle;
-    min-width:3.3ch;
+    min-width:calc(3.3ch/var(--fscl-r));
     width:100%;
     background-color: var(--ord_bg_color_light);
 }
