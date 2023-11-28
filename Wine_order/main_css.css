@@ -34,7 +34,7 @@ html{
     --ord_bg_color_light: #c8ffc8;
 }
 span.req{
-    color:red;
+    color:#f27474
 }
 /*.folded_input .info_item > .input{
     min-width:10ch !important;
@@ -51,7 +51,8 @@ body{
 	background-size: 200vh;
 	background-position: 25% 75%;*/
 }
-
+div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus{ 
+    box-shadow: 0 0 0 3px rgba(73,2,132, .5)!important; }
 
 #main_panel{
 	margin-left:calc(50% - var(--in-pannel-width)/2);
@@ -180,6 +181,7 @@ li:has(#submit_swal){
 	/*line-height:1vh;*/
 	/*margin:auto;*/
     font-family: 'caveat';
+    padding:  0 0  0 0.5ch;
 }
 #phone{
     font-size:calc(var(--fscl-r)*2.5vh);
@@ -208,7 +210,9 @@ li:has(#submit_swal){
     cursor:pointer;
 }
 input:not(:placeholder-shown){
-    font-family: 'Roboto'!important;
+    font-family: 'Arial'!important;
+    font-size: 2vh;
+    line-height: calc(2.75vh);
 }
 /****************************************/
 form{
@@ -365,7 +369,7 @@ form{
     flex:1;
 }
 .control_pane > .input > input{
-    font-size:calc(var(--fscl-r)*calc(3.2vh / var(--num-of-items) * var(--default-num)));
+    font-size:calc(var(--fscl-r)*calc(2.5vh / var(--num-of-items) * var(--default-num)));
     vertical-align: middle;
     min-width:calc(3.3ch/var(--fscl-r));
     width:100%;
@@ -385,7 +389,7 @@ form{
     align-items: center;
 }
 .control_pane > .image > img{
-    height:40%;
+    height:20%;
     cursor: pointer;
 }
 .folded_wine .wine_item{
