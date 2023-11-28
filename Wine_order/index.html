@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Caveat">
 	<link rel="icon" type="image/x-icon" href="images/bottle_icon_temp.png">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="script.js" charset="UTF-8"></script>
+    <script src="script.js"></script>
 </head>
 <body onLoad="onloadm()">
 	<div id="main_panel">
@@ -79,9 +79,9 @@
                                 </div>
                                 <div class="input">
                                     <div id="phone">
-                                        <input type="text" min="0" max="999" maxlength="3" name="phone_n1" id="phone_n1" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this);" onchange="info_handle(event, this);input_full(event, this);" placeholder="###">&nbsp;-
-                                        <input type="text" min="0" max="999" maxlength="3" name="phone_n2" id="phone_n2" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this); input_empty(event, this);" placeholder="###" onchange="info_handle(event, this);input_full(event, this);">&nbsp;-
-                                        <input type="text" min="0" max="9999" maxlength="4" name="phone_n3" id="phone_n3" pattern="[0-9]{4}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_empty(event, this); input_full(event, this);" onchange="info_handle(event, this); input_full(event, this);" placeholder="####">
+                                        <input type="text" maxlength="3" name="phone_n1" id="phone_n1" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this);" onchange="info_handle(event, this);input_full(event, this);" placeholder="###">&nbsp;-
+                                        <input type="text" maxlength="3" name="phone_n2" id="phone_n2" pattern="[0-9]{3}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_full(event, this); input_empty(event, this);" placeholder="###" onchange="info_handle(event, this);input_full(event, this);">&nbsp;-
+                                        <input type="text" maxlength="4" name="phone_n3" id="phone_n3" pattern="[0-9]{4}"  onkeyup="filter_num_code(event, this);" onkeydown="filter_num_code(event, this); input_empty(event, this); input_full(event, this);" onchange="info_handle(event, this); input_full(event, this);" placeholder="####">
                                     </div>
                                 </div>
                             </div>
