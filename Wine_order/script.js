@@ -422,7 +422,7 @@ form_submit = (event, ell) => {
         id = input.id;
         value = input.value;
         if (value == "" && id != "email" || id == "email" && !input.checkValidity()) {
-            if(id=="posta"){id="poĹˇta";}
+            if(id=="posta"){id="pošta";}
             invalids.push(id);
             continue;
         }
@@ -438,13 +438,13 @@ form_submit = (event, ell) => {
     dest = document.querySelector("#s_phone > .s_input");
     if (!(phn1.length == 3 && phn2.length == 3 && phn3.length == 4)) {
         if (!(phn1.length == 0 && phn2.length == 0 && phn3.length == 0)) {
-            invalids.push("telefonska Ĺˇtevilka");
+            invalids.push("telefonska številka");
         } else {
             dest.innerHTML = "<span style='color:rgb(230,230,230);user-select: none;'>---</span>"
         }
     } else {
         if(phn1!=parseInt(phn1)||phn2!=parseInt(phn2)||phn3!=parseInt(phn3)){
-            invalids.push("telefonska Ĺˇtevilka");
+            invalids.push("telefonska številka");
         }else{
             dest.innerHTML = phn1 + "-" + phn2 + "-" + phn3;
         }
@@ -461,7 +461,7 @@ form_submit = (event, ell) => {
             }
         }
         Swal.fire({
-            title: '<strong>NapaÄŤni vnosi</strong>',
+            title: '<strong>Napačni vnosi</strong>',
             icon: 'error',
             html: "Prosim pravilno vnesite naslednje podatke: " + msg + ".",
             confirmButtonColor: 'indigo',
@@ -519,7 +519,7 @@ form_submit = (event, ell) => {
 
     if (ordered.length == 0) {
         Swal.fire({
-            title: '<strong>Ni naroÄŤila</strong>',
+            title: '<strong>Ni naročila</strong>',
             icon: 'error',
             html: "Prosimo da izberete vina za nakup.",
             confirmButtonColor: 'indigo',
@@ -575,13 +575,13 @@ form_submit = (event, ell) => {
         focusConfirm: false,
         confirmButtonText: 'Potrdi nakup',
         confirmButtonColor: 'indigo',
-        cancelButtonText: 'PrekliÄŤi',
+        cancelButtonText: 'Prekliči',
         didOpen: () => Swal.getConfirmButton().focus()
     }).then((result) => {
         if (result.isConfirmed) {
             Swal.fire({
                 title: 'Potrjeno',
-                html: 'VaĹˇ nakup je bil potrjen.',
+                html: 'Vaš nakup je bil potrjen.',
                 icon: 'success',
                 confirmButtonColor: 'indigo',
                 timer: 3000,
