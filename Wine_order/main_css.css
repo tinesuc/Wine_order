@@ -199,6 +199,7 @@ li:has(#submit_swal){
     font-size: 2vh;
     border-width:calc(1px / var(--zoom));
     background-color:var(--but-c);
+    cursor:pointer;
 }
 /****************************************/
 form{
