@@ -6,6 +6,7 @@ bool2 = true;
 zoom = 1;
 num_of_inputs = 0;
 wines_list = [];
+wines_volume = 0;
 wsum = 0;
 info_list = Array(6).fill(0);
 isum = 0;
@@ -15,6 +16,29 @@ ww = 0;
 resize_h_runs = 0;
 prev_w = 0;
 prev_h = 0;
+wine_to_draw = [];
+
+w_volume = 0;
+w_todraw = [];
+inp_prev=false;
+
+get_img_px = (img)=>{
+    var canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+    var pixelData = canvas.getContext('2d').getImageData(img.width/2,img.height/1.8, 1, 1).data;
+    return "rgba("+pixelData[0]+","+pixelData[1]+","+pixelData[2]+","+pixelData[3]+")";
+}
+clamp = (num, min, max) => {
+    if (num == "NaN") {
+        num = "0";
+        return;
+    }
+    num = Math.max(0, num);
+    num = Math.min(max, num);
+    return num;
+}
 manage_input_panel = (event) => {
     //if(Date.now()-time2>0&&bool2){
     bool2 = false;
@@ -233,16 +257,31 @@ draw_bottle = () => {
      };
      */
     iproc = isum / 6 / 2;
-
-    wproc = wsum / wines_list.length;
-    wproc = Math.pow(wproc, 0.5) / 2;
-    proc = (iproc + wproc) * 0.8;
-
+    wproc = wsum / wines_volume;// how much of the bottle will fill
+    wproc = Math.pow(wproc, 1/*0.35*/);
+//    
+//    ct.clearRect(0, 0, canvas.width, canvas.height);
+//    total =0;
+//    wine_to_draw.forEach((value)=>{
+//        if(value===null){return;}
+//        ct.fillStyle = value.color;
+//        proc = (/*iproc +*/ value.amount/wproc);
+//        ct.fillRect(0, (1-total) * canvas.height, canvas.width,-canvas.height * proc);
+//        total+=proc;
+//        
+//    });
+    
+    ct.fillStyle = "rgba(0,0,0,0)";
     ct.clearRect(0, 0, canvas.width, canvas.height);
-    ;
-
-    ct.fillStyle = "indigo";
-    ct.fillRect(0, (1 - proc) * canvas.height, canvas.width, canvas.height * proc);
+    //w_volume total volume of all wines (0..1)
+    w_ttl=0.005;
+    w_todraw.forEach((value)=>{
+        if(value===null){return;}
+        ct.fillStyle = value.color;
+        proc=value.amount/w_volume*0.8;
+        ct.fillRect(0, (1-w_ttl) * canvas.height, canvas.width, -canvas.height * proc);
+        w_ttl+=proc;
+    });
 }
 
 
@@ -256,7 +295,19 @@ onloadm = () => {
 
     doc_full = document.fullscreenElement;
     li = Array.prototype.slice.call(document.querySelector('#selector > ul').children)
-    wines_list = Array(li.length).fill(0);
+    wines_list = Array(li.length);
+    wine_to_draw = Array(li.length);
+    w_todraw = Array(li.length);
+    li.forEach((value, index, array) => {
+        vol = value.querySelector(".text > span");
+        name = vol.innerHTML;
+        name = name.substring(name.lastIndexOf(" "));
+        name = name.substring(0, name.length-1);
+        volume = Number(name);
+        wines_volume+=volume;
+        w_volume+=volume;
+    });
+    
     num_of_inputs = li.length + 6;
     manage_input_panel(null);
     manage_wine_items(null, 7);
@@ -271,39 +322,49 @@ onloadm = () => {
 addEventListener("resize", resize_handle);
 
 info_handle = (event, ell) => {
-    val = ell.value;
-
-    li = Array.prototype.slice.call(document.querySelector('#table > ul').children),
-            liRef = ell.closest("li");
-    index = li.indexOf(liRef)
-    if (index != 5) {
-        if (val == "") {
-            info_list[index] = 0;
+    info_in = document.querySelectorAll("#table li > div");
+    invalids = [];
+    for (i = 0; i < 5; i++) {
+        inn = info_in[i];
+        input = inn.querySelector(".input > input");
+        id = input.id;
+        value = input.value;
+        if (value == "" && id != "email" || id == "email" && !input.checkValidity()) {
+            if(id=="posta"){id="pošta";}
+            invalids.push(id);
+            continue;
+        }
+        if (id == "email"&&(!input.checkValidity()||value=="")) {
+            value = "<span style='color:rgb(230,230,230);user-select: none;'>---</span>"
+        }
+        dest = document.querySelector("#s_" + id + " > .s_input");
+        dest.innerHTML = value;
+    }
+    phn1 = document.querySelector("#phone_n1").value;
+    phn2 = document.querySelector("#phone_n2").value;
+    phn3 = document.querySelector("#phone_n3").value;
+    dest = document.querySelector("#s_phone > .s_input");
+    if (!(phn1.length == 3 && phn2.length == 3 && phn3.length == 4)) {
+        if (!(phn1.length == 0 && phn2.length == 0 && phn3.length == 0)) {
+            invalids.push("telefonska številka");
         } else {
-            if (index == 4) {
-                if (ell.checkValidity()) {
-                    info_list[index] = 1;
-                } else {
-                    info_list[index] = 0;
-                }
-            } else {
-                info_list[index] = 1;
-            }
+            dest.innerHTML = "<span style='color:rgb(230,230,230);user-select: none;'>---</span>"
         }
     } else {
-        phn1 = document.querySelector("#phone_n1").value;
-        phn2 = document.querySelector("#phone_n2").value;
-        phn3 = document.querySelector("#phone_n3").value;
-        if (!(phn1.length == 3 && phn2.length == 3 && phn3.length == 4)) {
-            info_list[5] = 0;
-        } else {
-            info_list[5] = 1;
+        if(phn1!=parseInt(phn1)||phn2!=parseInt(phn2)||phn3!=parseInt(phn3)){
+            invalids.push("telefonska številka");
+        }else{
+            dest.innerHTML = phn1 + "-" + phn2 + "-" + phn3;
         }
     }
-    prev = isum;
-    isum = info_list.reduce((a, b) => a + b, 0);
-    if (prev != isum) {
-        draw_bottle();
+
+
+    if (invalids.length == 0) {
+        document.querySelector("#block").classList.remove("block");
+        document.querySelector("#bottle_panel").classList.add("enabled");
+    }else{
+        document.querySelector("#block").classList.add("block");
+        document.querySelector("#bottle_panel").classList.remove("enabled");
     }
 }
 input_full = (event, ell) => {
@@ -332,15 +393,7 @@ filter_keys = (event, keys, ell) => {
     ell.value = "";
     ell.value = tout;
 }
-clamp = (num, min, max) => {
-    if (num == "NaN") {
-        num = "0";
-        return;
-    }
-    num = Math.max(0, num);
-    num = Math.min(max, num);
-    return num;
-}
+
 filter_num_code = (event, ell) => {
     filter_keys(event, ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], ell)
 }
@@ -354,16 +407,18 @@ reset_sel = (event, ell) => {
     parent = ell.closest('.wine_item');
     parent.classList.remove("ordered");
     //remove class for background color
-    li = Array.prototype.slice.call(document.querySelector('#selector > ul').children),
-            liRef = ell.closest("li");
-    index = li.indexOf(liRef)
-    wines_list[index] = 0;
-    prev = wsum;
-    wsum = wines_list.reduce((a, b) => a + b, 0);
-    if (prev != wsum) {
-        draw_bottle();
-    }
-
+    li = Array.prototype.slice.call(document.querySelector('#selector > ul').children);
+    liRef = ell.closest("li");
+    index = li.indexOf(liRef);
+//    wines_list[index] = 0;
+//    wine_to_draw[index]=null;
+    w_todraw[index]=null;
+//    prev = wsum;
+//    wsum = wines_list.reduce((a, b) => a + b, 0);
+//    if (prev != wsum) {
+//        draw_bottle();
+//    }
+    draw_bottle();
 }
 num_input = (event, ell) => {
     num = parseInt(ell.value);
@@ -376,22 +431,41 @@ num_input = (event, ell) => {
         parent.classList.remove("ordered");
     }
 
-
-
-    li = Array.prototype.slice.call(document.querySelector('#selector > ul').children),
-            liRef = ell.closest("li");
+    li = Array.prototype.slice.call(document.querySelector('#selector > ul').children);
+    liRef = ell.closest("li");
+    vol = liRef.querySelector(".text > span");
+    name = vol.innerHTML;
+    name = name.substring(name.lastIndexOf(" "));
+    name = name.substring(0, name.length-1);
+    volume = Number(name);
     index = li.indexOf(liRef)
     if (num == 0 || ell.value == "") {
-        wines_list[index] = 0;
+//        wines_list[index] = 0;
+//        wine_to_draw[index]=null;
+        w_todraw[index]=null;
     } else {
-        wines_list[index] = 1;
+//        wines_list[index] = Math.pow(clamp(num/99,0,1), 0.1)*volume;
+        
+        img = liRef.querySelector(".image > img");
+        pix = get_img_px(img);
+//        wine_to_draw[index]={
+//            amount:Math.pow(clamp(num/99,0,1), 0.1)*volume,
+//            color:pix
+//        };
+        w_todraw[index]={
+            amount:Math.pow(clamp(num/99,0,1), 0.1)*volume,
+            color:pix
+        };
     }
-    prev = wsum;
-    wsum = wines_list.reduce((a, b) => a + b, 0);
-    if (prev != wsum) {
-        draw_bottle();
-    }
-
+//    prev = wsum;
+//    wsum = wine_to_draw.reduce((a, b) => a + b.amount, 0);
+//    
+    
+    
+//    if (prev != wsum) {
+//        draw_bottle();
+//    }
+    draw_bottle();
 }
 set_zero = (event, ell) => {
     if (ell.value == "") {
