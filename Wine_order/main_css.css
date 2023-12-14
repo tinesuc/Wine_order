@@ -372,7 +372,7 @@ form{
 .control_pane > .input > input{
     font-size:calc(var(--fscl-r)*calc(2.5vh / var(--num-of-items) * var(--default-num)));
     vertical-align: middle;
-    min-width:calc(3.3ch/var(--fscl-r));
+    min-width:calc(3.5ch/var(--fscl-r));
     width:100%;
     background-color: var(--ord_bg_color_light);
     padding: 0 0 0 0.2ch;
@@ -710,9 +710,80 @@ https://codepen.io/patrikx3/pen/ZEBQQyV
 
 
 
+@property --proc {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+@property --colr {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #000;
+}
+@property --colr2 {
+    syntax: '<color>';
+    inherits: false;
+    initial-value: #000;
+}
 
+#main_panel{
+    transition-timing-function:linear;
+}
+#bottle_panel{
+    --t1:1.0s;
+    --t2:0.05s;
+    --trt:linear(0 0%, 0.04 8.31%, 0.1 14.85%, 0.17 20.08%, 0.25 24.65%, 0.3 27.92%, 0.35 28.57%, 0.42 31.84%, 0.44 34.46%, 0.47 37.72%, 0.51 42.95%, 0.54 50.14%, 0.57 54.72%, 0.57 59.95%, 0.6 63.87%, 0.66 71.06%, 0.75 74.98%, 0.85 78.9%, 0.94 82.82%, 0.98 91.97%, 1 100%);
+    transition:--colr2 var(--t2) var(--trt), --proc var(--t1) var(--trt) var(--t2), --colr var(--t2) var(--trt) calc(var(--t2) + var(--t1));
+    --colr:#0000;
+    --colr2:#0000;
+    --proc:1%;
+    --deg:1.8deg;
+    --mskb:conic-gradient(from var(--deg) at center,
+        var(--colr) calc(var(--proc) - 1%), 
+        var(--colr2) var(--proc), 
+        var(--colr2) 99%, 
+        var(--colr) 100%);
+    
 
+    -webkit-mask-image: var(--mskb);
+    mask-image:var(--mskb);
 
+}
 
+#bottle_panel.enabled{
+    --proc:100%;
+    --colr:#ffff;
+    --colr2:#ffff;
+    transition:--colr var(--t2) var(--trt), --proc var(--t1) var(--trt) var(--t2), --colr2 var(--t2) var(--trt) calc(var(--t2) + var(--t1));
+}
 
+#block{
+    display:none;
+}
+.block{
+    display:revert !important;
+    position: relative;
+    z-index: 11;
+    margin: 0;
+    height: 100%;
+    top: calc(100%*-1);
+    background:#6664;
+    text-align: center;
+    backdrop-filter:blur(1px);
+}
+.block span{
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 100%;
+    font-size:3vh;
+    padding: 0 5vh;
+    text-shadow: 0px 0px 5px white, 0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white,0px 0px 5px white;
+}
 
+/*
+https://css-tricks.com/webkit-image-wipes/
+https://www.quirksmode.org/css/images/colorstops.html
+https://www.quirksmode.org/css/images/position.html
+https://css-tricks.com/css3-gradients/
+*/
